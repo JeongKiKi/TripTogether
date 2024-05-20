@@ -13,6 +13,14 @@
 		68D2D9772BFB519E009E04FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68D2D9752BFB519E009E04FA /* Main.storyboard */; };
 		68D2D9792BFB519F009E04FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68D2D9782BFB519F009E04FA /* Assets.xcassets */; };
 		68D2D97C2BFB519F009E04FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68D2D97A2BFB519F009E04FA /* LaunchScreen.storyboard */; };
+		68D2D9862BFB8FA0009E04FA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9852BFB8FA0009E04FA /* LoginViewController.swift */; };
+		68D2D9882BFB8FB5009E04FA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9872BFB8FB5009E04FA /* MainViewController.swift */; };
+		68D2D98A2BFB8FF1009E04FA /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9892BFB8FF1009E04FA /* LikeViewController.swift */; };
+		68D2D98C2BFB9001009E04FA /* MypageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D98B2BFB9001009E04FA /* MypageViewController.swift */; };
+		68D2D98E2BFB901D009E04FA /* MypageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D98D2BFB901D009E04FA /* MypageView.swift */; };
+		68D2D9902BFB9030009E04FA /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D98F2BFB9030009E04FA /* LikeView.swift */; };
+		68D2D9922BFB903C009E04FA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9912BFB903C009E04FA /* MainView.swift */; };
+		68D2D9942BFB904B009E04FA /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9932BFB904B009E04FA /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +32,14 @@
 		68D2D9782BFB519F009E04FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		68D2D97B2BFB519F009E04FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68D2D97D2BFB519F009E04FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68D2D9852BFB8FA0009E04FA /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		68D2D9872BFB8FB5009E04FA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		68D2D9892BFB8FF1009E04FA /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
+		68D2D98B2BFB9001009E04FA /* MypageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageViewController.swift; sourceTree = "<group>"; };
+		68D2D98D2BFB901D009E04FA /* MypageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageView.swift; sourceTree = "<group>"; };
+		68D2D98F2BFB9030009E04FA /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
+		68D2D9912BFB903C009E04FA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		68D2D9932BFB904B009E04FA /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,12 +75,44 @@
 				68D2D96F2BFB519E009E04FA /* AppDelegate.swift */,
 				68D2D9712BFB519E009E04FA /* SceneDelegate.swift */,
 				68D2D9732BFB519E009E04FA /* ViewController.swift */,
+				68D2D9972BFB9067009E04FA /* Model */,
+				68D2D9952BFB904F009E04FA /* Controller */,
+				68D2D9962BFB905E009E04FA /* View */,
 				68D2D9752BFB519E009E04FA /* Main.storyboard */,
 				68D2D9782BFB519F009E04FA /* Assets.xcassets */,
 				68D2D97A2BFB519F009E04FA /* LaunchScreen.storyboard */,
 				68D2D97D2BFB519F009E04FA /* Info.plist */,
 			);
 			path = TripTogether;
+			sourceTree = "<group>";
+		};
+		68D2D9952BFB904F009E04FA /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				68D2D9852BFB8FA0009E04FA /* LoginViewController.swift */,
+				68D2D9872BFB8FB5009E04FA /* MainViewController.swift */,
+				68D2D9892BFB8FF1009E04FA /* LikeViewController.swift */,
+				68D2D98B2BFB9001009E04FA /* MypageViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		68D2D9962BFB905E009E04FA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				68D2D9912BFB903C009E04FA /* MainView.swift */,
+				68D2D9932BFB904B009E04FA /* LoginView.swift */,
+				68D2D98F2BFB9030009E04FA /* LikeView.swift */,
+				68D2D98D2BFB901D009E04FA /* MypageView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		68D2D9972BFB9067009E04FA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,9 +186,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68D2D9902BFB9030009E04FA /* LikeView.swift in Sources */,
+				68D2D9862BFB8FA0009E04FA /* LoginViewController.swift in Sources */,
+				68D2D98E2BFB901D009E04FA /* MypageView.swift in Sources */,
+				68D2D9922BFB903C009E04FA /* MainView.swift in Sources */,
 				68D2D9742BFB519E009E04FA /* ViewController.swift in Sources */,
+				68D2D98C2BFB9001009E04FA /* MypageViewController.swift in Sources */,
 				68D2D9702BFB519E009E04FA /* AppDelegate.swift in Sources */,
 				68D2D9722BFB519E009E04FA /* SceneDelegate.swift in Sources */,
+				68D2D9942BFB904B009E04FA /* LoginView.swift in Sources */,
+				68D2D9882BFB8FB5009E04FA /* MainViewController.swift in Sources */,
+				68D2D98A2BFB8FF1009E04FA /* LikeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
