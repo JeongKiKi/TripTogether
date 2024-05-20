@@ -8,15 +8,31 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        // 화면전환을 위해 추가
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        let mainVC = UINavigationController(rootViewController: MainViewController())
+        let likeVC = UINavigationController(rootViewController: LikeViewController())
+        let mypageVC = UINavigationController(rootViewController: MypageViewController())
+        let tabBar = UITabBarController()
+        tabBar.setViewControllers([mainVC, likeVC, mypageVC], animated: true)
+
+        let house = UIImage(systemName: "house")
+        let like = UIImage(systemName: "hand.thumbsup")
+        let person = UIImage(systemName: "person.circle")
+
+        if let item = tabBar.tabBar.items {
+//            item[0].title = ""
+            item[0].image = house
+//            item[1].title = "단어장"
+            item[1].image = like
+//            item[2].title = "시험"
+            item[2].image = person
+        }
+        window?.rootViewController = tabBar
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -46,7 +62,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
-
