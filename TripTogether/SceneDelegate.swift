@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // 화면전환을 위해 추가
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let mainVC = UINavigationController(rootViewController: MainViewController())
+        let mainVC = UINavigationController(rootViewController: HomeViewController())
         let likeVC = UINavigationController(rootViewController: LikeViewController())
         let mypageVC = UINavigationController(rootViewController: MypageViewController())
         let tabBar = UITabBarController()
