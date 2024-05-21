@@ -25,6 +25,7 @@
 		68D2D99C2BFC3A78009E04FA /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D99B2BFC3A78009E04FA /* HomeTableViewCell.swift */; };
 		68D2D99E2BFC50FB009E04FA /* DummyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D99D2BFC50FB009E04FA /* DummyModel.swift */; };
 		68D2D9A02BFCC383009E04FA /* LikeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D99F2BFCC383009E04FA /* LikeCollectionViewCell.swift */; };
+		68D2D9A22BFCEA21009E04FA /* MypageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9A12BFCEA21009E04FA /* MypageTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		68D2D99B2BFC3A78009E04FA /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		68D2D99D2BFC50FB009E04FA /* DummyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyModel.swift; sourceTree = "<group>"; };
 		68D2D99F2BFCC383009E04FA /* LikeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCollectionViewCell.swift; sourceTree = "<group>"; };
+		68D2D9A12BFCEA21009E04FA /* MypageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				68D2D98F2BFB9030009E04FA /* LikeView.swift */,
 				68D2D99F2BFCC383009E04FA /* LikeCollectionViewCell.swift */,
 				68D2D98D2BFB901D009E04FA /* MypageView.swift */,
+				68D2D9A12BFCEA21009E04FA /* MypageTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				68D2D9942BFB904B009E04FA /* LoginView.swift in Sources */,
 				68D2D9882BFB8FB5009E04FA /* HomeViewController.swift in Sources */,
 				68D2D98A2BFB8FF1009E04FA /* LikeViewController.swift in Sources */,
+				68D2D9A22BFCEA21009E04FA /* MypageTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
