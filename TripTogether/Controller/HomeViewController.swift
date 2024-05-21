@@ -9,6 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     let homeView = HomeView()
+    let dummyModel = DummyModel()
     override func viewDidLoad() {
         title = "Home"
         super.viewDidLoad()
@@ -21,19 +22,28 @@ class HomeViewController: UIViewController {
     }
 }
 
-extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTableViewCellDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section
-        return 10 // Example count
+        return dummyModel.dummy.count // Example count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath) as? HomeTableViewCell else {
             return UITableViewCell()
         }
-        // Configure the cell
-        cell.textLabel?.text = "Row \(indexPath.row)" // Example text
+        let post = dummyModel.dummy[indexPath.row]
+        cell.photoSpot.image = post.photo
+        cell.descriptionLabel.text = post.description
+        cell.delegate = self
         return cell
+    }
+
+    func didTapLikeButton(in cell: HomeTableViewCell) {
+        guard let indexPath = homeView.homeTableView.indexPath(for: cell) else { return }
+        let post = dummyModel.dummy[indexPath.row]
+        print("버튼: \(post.description)")
+        // Handle the like action (e.g., update the model, UI, etc.)
     }
 
     // MARK: - UITableViewDelegate
@@ -41,5 +51,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Handle row selection
         tableView.deselectRow(at: indexPath, animated: true)
+        print("버튼눌림 \(indexPath.row)")
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
     }
 }
