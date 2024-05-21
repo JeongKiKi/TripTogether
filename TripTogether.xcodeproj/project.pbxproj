@@ -24,6 +24,7 @@
 		68D2D99A2BFB95FB009E04FA /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 68D2D9992BFB95FB009E04FA /* SnapKit */; };
 		68D2D99C2BFC3A78009E04FA /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D99B2BFC3A78009E04FA /* HomeTableViewCell.swift */; };
 		68D2D99E2BFC50FB009E04FA /* DummyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D99D2BFC50FB009E04FA /* DummyModel.swift */; };
+		68D2D9A02BFCC383009E04FA /* LikeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D99F2BFCC383009E04FA /* LikeCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		68D2D9932BFB904B009E04FA /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		68D2D99B2BFC3A78009E04FA /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		68D2D99D2BFC50FB009E04FA /* DummyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyModel.swift; sourceTree = "<group>"; };
+		68D2D99F2BFCC383009E04FA /* LikeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,10 +108,11 @@
 		68D2D9962BFB905E009E04FA /* View */ = {
 			isa = PBXGroup;
 			children = (
+				68D2D9932BFB904B009E04FA /* LoginView.swift */,
 				68D2D99B2BFC3A78009E04FA /* HomeTableViewCell.swift */,
 				68D2D9912BFB903C009E04FA /* HomeView.swift */,
-				68D2D9932BFB904B009E04FA /* LoginView.swift */,
 				68D2D98F2BFB9030009E04FA /* LikeView.swift */,
+				68D2D99F2BFCC383009E04FA /* LikeCollectionViewCell.swift */,
 				68D2D98D2BFB901D009E04FA /* MypageView.swift */,
 			);
 			path = View;
@@ -207,6 +210,7 @@
 				68D2D9922BFB903C009E04FA /* HomeView.swift in Sources */,
 				68D2D9742BFB519E009E04FA /* ViewController.swift in Sources */,
 				68D2D98C2BFB9001009E04FA /* MypageViewController.swift in Sources */,
+				68D2D9A02BFCC383009E04FA /* LikeCollectionViewCell.swift in Sources */,
 				68D2D99C2BFC3A78009E04FA /* HomeTableViewCell.swift in Sources */,
 				68D2D9702BFB519E009E04FA /* AppDelegate.swift in Sources */,
 				68D2D9722BFB519E009E04FA /* SceneDelegate.swift in Sources */,
