@@ -17,8 +17,21 @@ class MypageViewController: UIViewController {
         title = "MyPage"
         view = mypageView
         mypageView.myPageTableView.register(MypageTableViewCell.self, forCellReuseIdentifier: "MyPageCell")
+        mypageView.logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+
         mypageView.myPageTableView.dataSource = self
         mypageView.myPageTableView.delegate = self
+    }
+
+    @objc private func logoutButtonTapped() {
+        UserDefaults.standard.isLoggedIn = false
+        print("logoutnbtn")
+        switchToLoginViewController()
+    }
+
+    private func switchToLoginViewController() {
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        sceneDelegate?.switchToLoginViewController()
     }
 }
 

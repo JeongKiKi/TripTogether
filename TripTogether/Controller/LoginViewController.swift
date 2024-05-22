@@ -8,22 +8,32 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-
+    let loginView = LoginView()
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        setupActions()
     }
+
+    override func loadView() {
+        super.loadView()
+        view = loginView
+    }
+
+    private func setupActions() {
+        loginView.loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+    }
+
+    @objc private func loginButtonTapped() {
+        UserDefaults.standard.isLoggedIn = true
+        print("loginbtn")
+        switchToMainTabBarController()
+    }
+
+    // 로그인이 되어있는 경우
+    private func switchToMainTabBarController() {
+        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+        sceneDelegate?.switchToMainTabBarController()
+    }
+
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

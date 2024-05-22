@@ -9,10 +9,21 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-
+    var logincheck = LoginCheck()
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // 화면전환을 위해 추가
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        if UserDefaults.standard.isLoggedIn {
+            switchToMainTabBarController()
+        } else {
+            switchToLoginViewController()
+        }
+
+        window?.makeKeyAndVisible()
+    }
+
+    // 로그인이 되어있는 경우
+    func switchToMainTabBarController() {
         let mainVC = UINavigationController(rootViewController: HomeViewController())
         let likeVC = UINavigationController(rootViewController: LikeViewController())
         let mypageVC = UINavigationController(rootViewController: MypageViewController())
@@ -23,16 +34,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let like = UIImage(systemName: "hand.thumbsup")
         let person = UIImage(systemName: "person.circle")
 
-        if let item = tabBar.tabBar.items {
-//            item[0].title = ""
-            item[0].image = house
-//            item[1].title = "단어장"
-            item[1].image = like
-//            item[2].title = "시험"
-            item[2].image = person
+        if let items = tabBar.tabBar.items {
+            items[0].image = house
+            items[1].image = like
+            items[2].image = person
         }
+
         window?.rootViewController = tabBar
-        window?.makeKeyAndVisible()
+    }
+
+    // 로그인이 되어있지 않은 경우
+    func switchToLoginViewController() {
+        let loginVC = LoginViewController()
+        window?.rootViewController = loginVC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
