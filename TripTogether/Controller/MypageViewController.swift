@@ -10,6 +10,7 @@ import UIKit
 class MypageViewController: UIViewController {
     let mypageView = MypageView()
     let dummyModel = DummyModel()
+    let loginCheck = LoginCheck()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,12 +27,7 @@ class MypageViewController: UIViewController {
     @objc private func logoutButtonTapped() {
         UserDefaults.standard.isLoggedIn = false
         print("logoutnbtn")
-        switchToLoginViewController()
-    }
-
-    private func switchToLoginViewController() {
-        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-        sceneDelegate?.switchToLoginViewController()
+        loginCheck.switchToLoginViewController()
     }
 }
 

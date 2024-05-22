@@ -8,7 +8,10 @@
 import FirebaseAuth
 import UIKit
 class LoginViewController: UIViewController {
+    
     let loginView = LoginView()
+    let loginCheck = LoginCheck()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupActions()
@@ -43,7 +46,7 @@ class LoginViewController: UIViewController {
 
             UserDefaults.standard.isLoggedIn = true
             print("Successfully logged in")
-            self.switchToMainTabBarController()
+            loginCheck.switchToMainTabBarController()
         }
     }
 
@@ -58,8 +61,4 @@ class LoginViewController: UIViewController {
     }
 
     // 로그인이 되어있는 경우
-    private func switchToMainTabBarController() {
-        let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
-        sceneDelegate?.switchToMainTabBarController()
-    }
 }
