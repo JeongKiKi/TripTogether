@@ -18,7 +18,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else {
             switchToLoginViewController()
         }
-
         window?.makeKeyAndVisible()
     }
 
@@ -46,7 +45,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // 로그인이 되어있지 않은 경우
     func switchToLoginViewController() {
         let loginVC = LoginViewController()
-        window?.rootViewController = loginVC
+        let navigationController = UINavigationController(rootViewController: loginVC)
+
+        window?.rootViewController = navigationController
+//        window?.rootViewController = loginVC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

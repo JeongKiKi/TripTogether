@@ -21,6 +21,8 @@ class LoginViewController: UIViewController {
 
     private func setupActions() {
         loginView.loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        loginView.makeEmailButton.addTarget(self, action: #selector(makeEmailButtonTapped), for: .touchUpInside)
+        loginView.findPasswordButton.addTarget(self, action: #selector(findPasswordButtonTapped), for: .touchUpInside)
     }
 
     @objc private func loginButtonTapped() {
@@ -43,6 +45,16 @@ class LoginViewController: UIViewController {
             print("Successfully logged in")
             self.switchToMainTabBarController()
         }
+    }
+
+    @objc private func makeEmailButtonTapped() {
+        print("회원가입 버튼 눌림")
+        let makeEmail = MakeEmailViewController()
+        navigationController?.pushViewController(makeEmail, animated: true)
+    }
+
+    @objc private func findPasswordButtonTapped() {
+        print("비밀번호 찾기 버튼 눌림")
     }
 
     // 로그인이 되어있는 경우
