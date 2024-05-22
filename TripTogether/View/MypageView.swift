@@ -100,6 +100,15 @@ class MypageView: UIView {
         return vw
     }()
 
+    lazy var logoutButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("로그아웃", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.layer.cornerRadius = 5
+        btn.layer.borderWidth = 1
+        return btn
+    }()
+
     lazy var myPageTableView: UITableView = {
         let table = UITableView()
         return table
@@ -110,6 +119,7 @@ extension MypageView {
     func setupUI() {
         addSubview(userinfo)
         addSubview(myPageTableView)
+        addSubview(logoutButton)
         userinfo.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(20)
             $0.leading.trailing.equalToSuperview().inset(40)
@@ -125,8 +135,13 @@ extension MypageView {
             $0.leading.trailing.equalTo(userinfo).inset(20)
             $0.bottom.equalTo(userinfo).offset(-10)
         }
+        logoutButton.snp.makeConstraints {
+            $0.top.equalTo(userinfo.snp.bottom).offset(10)
+            $0.leading.trailing.equalTo(userinfo)
+            $0.height.equalTo(30)
+        }
         myPageTableView.snp.makeConstraints {
-            $0.top.equalTo(userinfo.snp.bottom).offset(20)
+            $0.top.equalTo(logoutButton.snp.bottom).offset(20)
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom)
             $0.leading.trailing.equalTo(0)
         }
