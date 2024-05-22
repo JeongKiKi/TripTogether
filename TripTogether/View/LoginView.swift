@@ -56,6 +56,34 @@ class LoginView: UIView {
         return btn
     }()
 
+    lazy var makeEmailButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("회원가입", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.layer.cornerRadius = 5
+        btn.layer.borderWidth = 1
+        return btn
+    }()
+
+    lazy var findPasswordButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("비밀번호 찾기", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.layer.cornerRadius = 5
+        btn.layer.borderWidth = 1
+        return btn
+    }()
+
+    lazy var makeStack: UIStackView = {
+        let st = UIStackView()
+        st.axis = .horizontal
+        st.spacing = 10
+        st.alignment = .fill
+        st.distribution = .fillEqually
+        [makeEmailButton, findPasswordButton].forEach { st.addArrangedSubview($0) }
+        return st
+    }()
+
     lazy var idPasswodrStack: UIStackView = {
         let st = UIStackView()
         st.axis = .vertical
@@ -69,7 +97,7 @@ class LoginView: UIView {
     func setupUI() {
         addSubview(idPasswodrStack)
         addSubview(loginButton)
-
+        addSubview(makeStack)
         idPasswodrStack.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(100)
             $0.leading.trailing.equalToSuperview().inset(40)
@@ -86,6 +114,11 @@ class LoginView: UIView {
         loginButton.snp.makeConstraints {
             $0.top.equalTo(idPasswodrStack.snp.bottom).offset(30)
             $0.leading.trailing.equalToSuperview().inset(40)
+            $0.height.equalTo(50)
+        }
+        makeStack.snp.makeConstraints {
+            $0.top.equalTo(loginButton.snp.bottom).offset(20)
+            $0.leading.trailing.equalTo(loginButton)
             $0.height.equalTo(50)
         }
     }
