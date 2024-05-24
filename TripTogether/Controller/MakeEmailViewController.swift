@@ -6,8 +6,10 @@
 //
 
 import FirebaseAuth
+import FirebaseFirestore
 import UIKit
 class MakeEmailViewController: UIViewController {
+    let db = Firestore.firestore()
     let makeEmailView = MakeEmailView()
     let loginCheck = LoginCheck()
 
@@ -26,7 +28,8 @@ class MakeEmailViewController: UIViewController {
         print("비밀번호 찾기 버튼 눌림")
         guard let email = makeEmailView.emailTextField.text, !email.isEmpty,
               let password = makeEmailView.passwordTextField.text, !password.isEmpty,
-              let passwordCheck = makeEmailView.passwordCheckTextField.text, !passwordCheck.isEmpty
+              let passwordCheck = makeEmailView.passwordCheckTextField.text, !passwordCheck.isEmpty,
+              let nickname = makeEmailView.nickNameTextField.text, !nickname.isEmpty
         else {
             print("모든 필드를 입력해주세요.")
             return
@@ -37,17 +40,28 @@ class MakeEmailViewController: UIViewController {
             return
         }
 
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] _, error in
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
             guard let self = self else { return }
             if let error = error {
                 print("회원가입 실패: \(error.localizedDescription)")
                 return
             }
-
+            guard let uid = authResult?.user.uid else { return }
             print("회원가입 성공")
             UserDefaults.standard.set(true, forKey: "isLoggedIn")
-//            loginCheck.switchToMainTabBarController()
+            loginCheck.switchToMainTabBarController()
+            print(uid)
+            db.collection("userInfo").document(uid).setData(["email": email,
+                                                             "nickName": nickname,
+                                                             "like": "", "liked": "", "uid": uid])
+            { error in
+                if let error = error {
+                    print("There was an issue saving data to firestore, \(error)")
+                } else {
+                    print("Successfully saved data.")
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
         }
-        navigationController?.popViewController(animated: true)
     }
 }

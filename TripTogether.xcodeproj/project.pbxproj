@@ -31,6 +31,8 @@
 		68D2D9A92BFDCA1D009E04FA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 68D2D9A82BFDCA1D009E04FA /* FirebaseAuth */; };
 		68D2D9AB2BFDDA38009E04FA /* MakeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9AA2BFDDA37009E04FA /* MakeEmailViewController.swift */; };
 		68D2D9AD2BFDDA59009E04FA /* MakeEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9AC2BFDDA59009E04FA /* MakeEmailView.swift */; };
+		68D2D9B12C002D4D009E04FA /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9B02C002D4D009E04FA /* FirebaseManager.swift */; };
+		68D2D9B42C002E8C009E04FA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 68D2D9B32C002E8C009E04FA /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,7 @@
 		68D2D9A52BFDC820009E04FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		68D2D9AA2BFDDA37009E04FA /* MakeEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeEmailViewController.swift; sourceTree = "<group>"; };
 		68D2D9AC2BFDDA59009E04FA /* MakeEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeEmailView.swift; sourceTree = "<group>"; };
+		68D2D9B02C002D4D009E04FA /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,7 @@
 			files = (
 				68D2D99A2BFB95FB009E04FA /* SnapKit in Frameworks */,
 				68D2D9A92BFDCA1D009E04FA /* FirebaseAuth in Frameworks */,
+				68D2D9B42C002E8C009E04FA /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +82,7 @@
 			children = (
 				68D2D96E2BFB519E009E04FA /* TripTogether */,
 				68D2D96D2BFB519E009E04FA /* Products */,
+				68D2D9B22C002E8C009E04FA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,8 +144,16 @@
 			children = (
 				68D2D99D2BFC50FB009E04FA /* DummyModel.swift */,
 				68D2D9A32BFD7CD7009E04FA /* LoginCheck.swift */,
+				68D2D9B02C002D4D009E04FA /* FirebaseManager.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		68D2D9B22C002E8C009E04FA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,6 +175,7 @@
 			packageProductDependencies = (
 				68D2D9992BFB95FB009E04FA /* SnapKit */,
 				68D2D9A82BFDCA1D009E04FA /* FirebaseAuth */,
+				68D2D9B32C002E8C009E04FA /* FirebaseFirestore */,
 			);
 			productName = TripTogether;
 			productReference = 68D2D96C2BFB519E009E04FA /* TripTogether.app */;
@@ -232,6 +246,7 @@
 				68D2D98E2BFB901D009E04FA /* MypageView.swift in Sources */,
 				68D2D9922BFB903C009E04FA /* HomeView.swift in Sources */,
 				68D2D9742BFB519E009E04FA /* ViewController.swift in Sources */,
+				68D2D9B12C002D4D009E04FA /* FirebaseManager.swift in Sources */,
 				68D2D98C2BFB9001009E04FA /* MypageViewController.swift in Sources */,
 				68D2D9A02BFCC383009E04FA /* LikeCollectionViewCell.swift in Sources */,
 				68D2D99C2BFC3A78009E04FA /* HomeTableViewCell.swift in Sources */,
@@ -488,6 +503,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68D2D9A72BFDCA1D009E04FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		68D2D9B32C002E8C009E04FA /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 68D2D9A72BFDCA1D009E04FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
