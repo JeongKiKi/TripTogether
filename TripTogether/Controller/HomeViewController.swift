@@ -19,6 +19,16 @@ class HomeViewController: UIViewController {
         homeView.homeTableView.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeCell")
         homeView.homeTableView.dataSource = self
         homeView.homeTableView.delegate = self
+        setupNavigationBar()
+    }
+
+    private func setupNavigationBar() {
+        let rightButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(rightButtonTapped))
+        navigationItem.rightBarButtonItem = rightButton
+    }
+
+    @objc private func rightButtonTapped() {
+        print("오른쪽 버튼 눌림")
     }
 }
 
