@@ -39,18 +39,20 @@ class MakeEmailViewController: UIViewController {
             print("비밀번호가 일치하지 않습니다.")
             return
         }
-
+        // 회원가입
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
             guard let self = self else { return }
             if let error = error {
                 print("회원가입 실패: \(error.localizedDescription)")
                 return
             }
+            // 문서를 uid로 지정하기위해 uid 가져오기
             guard let uid = authResult?.user.uid else { return }
-            print("회원가입 성공")
+            
+            // 로그인 상태 저장
             UserDefaults.standard.set(true, forKey: "isLoggedIn")
-            loginCheck.switchToMainTabBarController()
-            print(uid)
+
+            // 회원가입 userinfo를 firebasestore에 저장
             db.collection("userInfo").document(uid).setData(["email": email,
                                                              "nickName": nickname,
                                                              "like": "", "liked": "", "uid": uid])
@@ -62,6 +64,8 @@ class MakeEmailViewController: UIViewController {
                     self.navigationController?.popViewController(animated: true)
                 }
             }
+            // 로그인 상태에 따라 화면 전환
+            self.loginCheck.switchToMainTabBarController()
         }
     }
 }
