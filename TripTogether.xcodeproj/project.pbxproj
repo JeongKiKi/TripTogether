@@ -35,6 +35,7 @@
 		68D2D9B42C002E8C009E04FA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 68D2D9B32C002E8C009E04FA /* FirebaseFirestore */; };
 		68D2D9B62C02D889009E04FA /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9B52C02D889009E04FA /* AddPostViewController.swift */; };
 		68D2D9B82C02D8A3009E04FA /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9B72C02D8A3009E04FA /* AddPostView.swift */; };
+		68D2D9BA2C04E26A009E04FA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 68D2D9B92C04E26A009E04FA /* FirebaseStorage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68D2D99A2BFB95FB009E04FA /* SnapKit in Frameworks */,
+				68D2D9BA2C04E26A009E04FA /* FirebaseStorage in Frameworks */,
 				68D2D9A92BFDCA1D009E04FA /* FirebaseAuth in Frameworks */,
 				68D2D9B42C002E8C009E04FA /* FirebaseFirestore in Frameworks */,
 			);
@@ -182,6 +184,7 @@
 				68D2D9992BFB95FB009E04FA /* SnapKit */,
 				68D2D9A82BFDCA1D009E04FA /* FirebaseAuth */,
 				68D2D9B32C002E8C009E04FA /* FirebaseFirestore */,
+				68D2D9B92C04E26A009E04FA /* FirebaseStorage */,
 			);
 			productName = TripTogether;
 			productReference = 68D2D96C2BFB519E009E04FA /* TripTogether.app */;
@@ -516,6 +519,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68D2D9A72BFDCA1D009E04FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		68D2D9B92C04E26A009E04FA /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 68D2D9A72BFDCA1D009E04FA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
