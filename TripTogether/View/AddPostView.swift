@@ -34,14 +34,29 @@ class AddPostView: UIView {
         return tf
     }()
 
+    lazy var addButton: UIButton = {
+        let btn = UIButton()
+        btn.setImage(.add, for: .normal)
+//        btn.setTitleColor(.white, for: .normal)
+        btn.tintColor = .white
+        btn.backgroundColor = .black
+        btn.layer.cornerRadius = 10
+        return btn
+    }()
+
     func setupUI() {
         addSubview(photoImage)
         addSubview(photoTextfield)
-
+        addSubview(addButton)
         photoImage.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(200)
+        }
+        addButton.snp.makeConstraints {
+            $0.top.equalTo(photoImage.snp.top).offset(10)
+            $0.trailing.equalTo(photoImage.snp.trailing).offset(10)
+            $0.width.height.equalTo(20)
         }
         photoTextfield.snp.makeConstraints {
             $0.top.equalTo(photoImage.snp.bottom).offset(30)
