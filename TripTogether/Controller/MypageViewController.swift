@@ -24,10 +24,27 @@ class MypageViewController: UIViewController {
         mypageView.myPageTableView.delegate = self
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let userNickname = UserDefaults.standard.nickName else { return }
+        guard let like = UserDefaults.standard.like else { return }
+        guard let liked = UserDefaults.standard.liked else { return }
+
+        print(userNickname)
+        // Ensure the nickname is updated before the view appears
+        mypageView.userName.text = UserDefaults.standard.nickName
+        mypageView.myTotalLikeInt.text = UserDefaults.standard.like
+        mypageView.othersTotalLikeInt.text = UserDefaults.standard.liked
+    }
+
     @objc private func logoutButtonTapped() {
         UserDefaults.standard.isLoggedIn = false
         print("logoutnbtn")
         loginCheck.switchToLoginViewController()
+    }
+
+    override func loadView() {
+        super.loadView()
     }
 }
 

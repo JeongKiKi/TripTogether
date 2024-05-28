@@ -55,7 +55,7 @@ class MakeEmailViewController: UIViewController {
             // 회원가입 userinfo를 firebasestore에 저장
             db.collection("userInfo").document(uid).setData(["email": email,
                                                              "nickName": nickname,
-                                                             "like": "", "liked": "", "uid": uid])
+                                                             "like": "0", "liked": "0", "uid": uid])
             { error in
                 if let error = error {
                     print("There was an issue saving data to firestore, \(error)")

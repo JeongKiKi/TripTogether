@@ -6,12 +6,14 @@
 //
 
 import FirebaseAuth
+import FirebaseFirestore
 import UIKit
+
 class LoginViewController: UIViewController {
-    
     let loginView = LoginView()
     let loginCheck = LoginCheck()
-    
+    let db = Firestore.firestore()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupActions()
@@ -36,7 +38,7 @@ class LoginViewController: UIViewController {
             return
         }
 
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] _, error in
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
             guard let self = self else { return }
             if let error = error {
                 print("Error logging in: \(error.localizedDescription)")
@@ -44,9 +46,36 @@ class LoginViewController: UIViewController {
                 return
             }
 
-            UserDefaults.standard.isLoggedIn = true
             print("Successfully logged in")
-            loginCheck.switchToMainTabBarController()
+            guard let uid = authResult?.user.uid else { return }
+            self.fetchUserData(uid: uid)
+        }
+    }
+
+    private func fetchUserData(uid: String) {
+        db.collection("userInfo").document(uid).getDocument { [weak self] document, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error fetching user data: \(error.localizedDescription)")
+                return
+            }
+
+            guard let document = document, document.exists,
+                  let data = document.data(),
+                  let nickName = data["nickName"] as? String,
+                  let like = data["like"] as? String,
+                  let liked = data["liked"] as? String
+            else {
+                print("User data not found or malformed")
+                return
+            }
+
+            UserDefaults.standard.isLoggedIn = true
+            UserDefaults.standard.uid = uid
+            UserDefaults.standard.nickName = nickName
+            UserDefaults.standard.like = like
+            UserDefaults.standard.liked = liked
+            self.loginCheck.switchToMainTabBarController()
         }
     }
 

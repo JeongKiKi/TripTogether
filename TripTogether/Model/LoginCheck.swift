@@ -9,6 +9,10 @@ import UIKit
 extension UserDefaults {
     private enum Keys {
         static let isLoggedIn = "isLoggedIn"
+        static let uid = "uid"
+        static let nickName = "nickName"
+        static let like = "like"
+        static let liked = "liked"
     }
 
     var isLoggedIn: Bool {
@@ -17,6 +21,42 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: Keys.isLoggedIn)
+        }
+    }
+
+    var uid: String? {
+        get {
+            return string(forKey: Keys.uid)
+        }
+        set {
+            set(newValue, forKey: Keys.uid)
+        }
+    }
+
+    var nickName: String? {
+        get {
+            return string(forKey: Keys.nickName)
+        }
+        set {
+            set(newValue, forKey: Keys.nickName)
+        }
+    }
+
+    var like: String? {
+        get {
+            return string(forKey: Keys.like)
+        }
+        set {
+            set(newValue, forKey: Keys.like)
+        }
+    }
+
+    var liked: String? {
+        get {
+            return string(forKey: Keys.liked)
+        }
+        set {
+            set(newValue, forKey: Keys.liked)
         }
     }
 }
