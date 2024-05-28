@@ -34,7 +34,8 @@ class AddPostViewController: UIViewController {
         guard let des = addPostView.photoTextfield.text else { return }
         // firebase에 업로드
         guard let selectedImage = addPostView.photoImage.image else { return }
-        addPost(image: selectedImage, description: des, userId: "test")
+        guard let userNickname = UserDefaults.standard.nickName else { return }
+        addPost(image: selectedImage, description: des, userId: userNickname)
         navigationController?.popViewController(animated: true)
     }
 
