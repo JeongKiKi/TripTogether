@@ -36,6 +36,7 @@
 		68D2D9B62C02D889009E04FA /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9B52C02D889009E04FA /* AddPostViewController.swift */; };
 		68D2D9B82C02D8A3009E04FA /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9B72C02D8A3009E04FA /* AddPostView.swift */; };
 		68D2D9BA2C04E26A009E04FA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 68D2D9B92C04E26A009E04FA /* FirebaseStorage */; };
+		68D2D9BC2C05D086009E04FA /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9BB2C05D086009E04FA /* Post.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		68D2D9B02C002D4D009E04FA /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		68D2D9B52C02D889009E04FA /* AddPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
 		68D2D9B72C02D8A3009E04FA /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
+		68D2D9BB2C05D086009E04FA /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				68D2D99D2BFC50FB009E04FA /* DummyModel.swift */,
+				68D2D9BB2C05D086009E04FA /* Post.swift */,
 				68D2D9A32BFD7CD7009E04FA /* LoginCheck.swift */,
 				68D2D9B02C002D4D009E04FA /* FirebaseManager.swift */,
 			);
@@ -247,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68D2D9AB2BFDDA38009E04FA /* MakeEmailViewController.swift in Sources */,
+				68D2D9BC2C05D086009E04FA /* Post.swift in Sources */,
 				68D2D9902BFB9030009E04FA /* LikeView.swift in Sources */,
 				68D2D9862BFB8FA0009E04FA /* LoginViewController.swift in Sources */,
 				68D2D9A42BFD7CD7009E04FA /* LoginCheck.swift in Sources */,

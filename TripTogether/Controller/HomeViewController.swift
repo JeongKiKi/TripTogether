@@ -5,11 +5,16 @@
 //  Created by 정기현 on 2024/05/20.
 //
 
+import Firebase
+import FirebaseFirestore
 import UIKit
 
 class HomeViewController: UIViewController {
     let homeView = HomeView()
     let dummyModel = DummyModel()
+    var posts = [Post]()
+    let db = Firestore.firestore()
+
     override func viewDidLoad() {
         title = "Home"
         super.viewDidLoad()
@@ -20,6 +25,7 @@ class HomeViewController: UIViewController {
         homeView.homeTableView.dataSource = self
         homeView.homeTableView.delegate = self
         setupNavigationBar()
+        fetchPosts()
     }
 
     private func setupNavigationBar() {
@@ -32,28 +38,43 @@ class HomeViewController: UIViewController {
         let ap = AddPostViewController()
         navigationController?.pushViewController(ap, animated: true)
     }
+
+    private func fetchPosts() {
+        db.collection("posts").getDocuments { [weak self] snapshot, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error fetching posts: \(error)")
+                return
+            }
+            guard let documents = snapshot?.documents else { return }
+            self.posts = documents.compactMap { Post(dictionary: $0.data()) }
+            self.homeView.homeTableView.reloadData()
+        }
+    }
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTableViewCellDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section
-        return dummyModel.dummy.count // Example count
+        return posts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath) as? HomeTableViewCell else {
             return UITableViewCell()
         }
-        let post = dummyModel.dummy[indexPath.row]
-        cell.photoSpot.image = post.photo
+        let post = posts[indexPath.row]
         cell.descriptionLabel.text = post.description
+        if let url = URL(string: post.photoURL) {
+            cell.photoSpot.loadImage(from: url)
+        }
         cell.delegate = self
         return cell
     }
 
     func didTapLikeButton(in cell: HomeTableViewCell) {
         guard let indexPath = homeView.homeTableView.indexPath(for: cell) else { return }
-        let post = dummyModel.dummy[indexPath.row]
+        let post = posts[indexPath.row]
         print("버튼: \(post.description)")
         // Handle the like action (e.g., update the model, UI, etc.)
     }
