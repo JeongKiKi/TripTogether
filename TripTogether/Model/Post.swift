@@ -10,10 +10,11 @@ import FirebaseFirestore
 struct Post {
     let photoURL: String
     let description: String
-
+    let userId: String
     init(dictionary: [String: Any]) {
         self.photoURL = dictionary["imageUrl"] as? String ?? ""
         self.description = dictionary["description"] as? String ?? ""
+        self.userId = dictionary["userId"] as? String ?? ""
     }
 }
 

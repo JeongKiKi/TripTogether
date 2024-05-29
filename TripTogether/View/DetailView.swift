@@ -1,34 +1,16 @@
 //
-//  HomeTableViewCell.swift
+//  DetailView.swift
 //  TripTogether
 //
-//  Created by 정기현 on 2024/05/21.
+//  Created by 정기현 on 2024/05/29.
 //
 
 import SnapKit
 import UIKit
-
-protocol HomeTableViewCellDelegate: AnyObject {
-    func didTapLikeButton(in cell: HomeTableViewCell)
-}
-
-class HomeTableViewCell: UITableViewCell {
-    weak var delegate: HomeTableViewCellDelegate?
-    let homeView = HomeView()
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        contentView.addSubview(homeView)
+class DetailView: UIView {
+    init() {
+        super.init(frame: .zero)
+        backgroundColor = .white
         setupUI()
     }
 
@@ -49,10 +31,9 @@ class HomeTableViewCell: UITableViewCell {
         let likeImage = UIImage(systemName: "hand.thumbsup")
         btn.setImage(likeImage, for: .normal)
         btn.tintColor = .blue
-        btn.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return btn
     }()
-    
+
     lazy var nickNmaeLabel: UILabel = {
         let lb = UILabel()
         lb.text = "a"
@@ -66,16 +47,16 @@ class HomeTableViewCell: UITableViewCell {
     }()
 
     func setupUI() {
-        contentView.addSubview(photoSpot)
-        contentView.addSubview(descriptionLabel)
-        contentView.addSubview(nickNmaeLabel)
-        contentView.addSubview(likeButton)
+        addSubview(photoSpot)
+        addSubview(descriptionLabel)
+        addSubview(nickNmaeLabel)
+        addSubview(likeButton)
 
-        photoSpot.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(200)
-            make.bottom.lessThanOrEqualToSuperview().offset(-10) // Ensure the bottom margin is respected
+        photoSpot.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(200)
+            $0.bottom.lessThanOrEqualToSuperview().offset(-10)
         }
         likeButton.snp.makeConstraints {
             $0.leading.equalTo(descriptionLabel.snp.leading)
@@ -94,9 +75,5 @@ class HomeTableViewCell: UITableViewCell {
             make.height.equalTo(30)
             make.bottom.lessThanOrEqualToSuperview().offset(-10)
         }
-    }
-
-    @objc func likeButtonTapped() {
-        delegate?.didTapLikeButton(in: self)
     }
 }

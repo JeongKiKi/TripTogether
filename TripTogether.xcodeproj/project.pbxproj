@@ -37,6 +37,8 @@
 		68D2D9B82C02D8A3009E04FA /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9B72C02D8A3009E04FA /* AddPostView.swift */; };
 		68D2D9BA2C04E26A009E04FA /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 68D2D9B92C04E26A009E04FA /* FirebaseStorage */; };
 		68D2D9BC2C05D086009E04FA /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9BB2C05D086009E04FA /* Post.swift */; };
+		68D2D9BE2C070EA6009E04FA /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9BD2C070EA6009E04FA /* DetailView.swift */; };
+		68D2D9C02C070EBC009E04FA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9BF2C070EBC009E04FA /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +70,8 @@
 		68D2D9B52C02D889009E04FA /* AddPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
 		68D2D9B72C02D8A3009E04FA /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
 		68D2D9BB2C05D086009E04FA /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		68D2D9BD2C070EA6009E04FA /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		68D2D9BF2C070EBC009E04FA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +131,7 @@
 				68D2D9AA2BFDDA37009E04FA /* MakeEmailViewController.swift */,
 				68D2D9872BFB8FB5009E04FA /* HomeViewController.swift */,
 				68D2D9B52C02D889009E04FA /* AddPostViewController.swift */,
+				68D2D9BF2C070EBC009E04FA /* DetailViewController.swift */,
 				68D2D9892BFB8FF1009E04FA /* LikeViewController.swift */,
 				68D2D98B2BFB9001009E04FA /* MypageViewController.swift */,
 			);
@@ -139,6 +144,7 @@
 				68D2D9932BFB904B009E04FA /* LoginView.swift */,
 				68D2D9AC2BFDDA59009E04FA /* MakeEmailView.swift */,
 				68D2D9B72C02D8A3009E04FA /* AddPostView.swift */,
+				68D2D9BD2C070EA6009E04FA /* DetailView.swift */,
 				68D2D99B2BFC3A78009E04FA /* HomeTableViewCell.swift */,
 				68D2D9912BFB903C009E04FA /* HomeView.swift */,
 				68D2D98F2BFB9030009E04FA /* LikeView.swift */,
@@ -264,8 +270,10 @@
 				68D2D98C2BFB9001009E04FA /* MypageViewController.swift in Sources */,
 				68D2D9A02BFCC383009E04FA /* LikeCollectionViewCell.swift in Sources */,
 				68D2D99C2BFC3A78009E04FA /* HomeTableViewCell.swift in Sources */,
+				68D2D9C02C070EBC009E04FA /* DetailViewController.swift in Sources */,
 				68D2D9702BFB519E009E04FA /* AppDelegate.swift in Sources */,
 				68D2D9722BFB519E009E04FA /* SceneDelegate.swift in Sources */,
+				68D2D9BE2C070EA6009E04FA /* DetailView.swift in Sources */,
 				68D2D9942BFB904B009E04FA /* LoginView.swift in Sources */,
 				68D2D9B62C02D889009E04FA /* AddPostViewController.swift in Sources */,
 				68D2D9882BFB8FB5009E04FA /* HomeViewController.swift in Sources */,
