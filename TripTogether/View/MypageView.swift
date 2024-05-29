@@ -28,6 +28,23 @@ class MypageView: UIView {
         return lb
     }()
 
+    lazy var myTotalPostInt: UILabel = {
+        let lb = UILabel()
+        lb.text = "1"
+        lb.textColor = .black
+        lb.textAlignment = .center
+        return lb
+    }()
+
+    lazy var myTotalPostLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = "내 게시물"
+        lb.textColor = .black
+        lb.font = .systemFont(ofSize: 10)
+        lb.textAlignment = .center
+        return lb
+    }()
+
     lazy var myTotalLikeInt: UILabel = {
         let lb = UILabel()
         lb.text = "30"
@@ -62,6 +79,16 @@ class MypageView: UIView {
         return lb
     }()
 
+    lazy var myPostStack: UIStackView = {
+        let st = UIStackView(arrangedSubviews: [myTotalPostInt, myTotalPostLabel])
+        st.axis = .vertical
+        st.alignment = .fill
+        st.distribution = .fillEqually
+        st.spacing = 7
+        addSubview(st)
+        return st
+    }()
+
     lazy var myStack: UIStackView = {
         let st = UIStackView(arrangedSubviews: [myTotalLikeInt, myTotalLikeLabel])
         st.axis = .vertical
@@ -83,7 +110,7 @@ class MypageView: UIView {
     }()
 
     lazy var likeStack: UIStackView = {
-        let st = UIStackView(arrangedSubviews: [myStack, othersStack])
+        let st = UIStackView(arrangedSubviews: [myPostStack, myStack, othersStack])
         st.axis = .horizontal
         st.alignment = .fill
         st.distribution = .fillEqually
