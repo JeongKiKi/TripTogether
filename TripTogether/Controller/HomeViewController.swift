@@ -59,12 +59,14 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
         return posts.count
     }
 
+    // 셀 구성
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath) as? HomeTableViewCell else {
             return UITableViewCell()
         }
         let post = posts[indexPath.row]
         cell.descriptionLabel.text = post.description
+        cell.nickNmaeLabel.text = post.userId
         if let url = URL(string: post.photoURL) {
             cell.photoSpot.loadImage(from: url)
         }
@@ -72,21 +74,29 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
         return cell
     }
 
+    // 좋아요 버튼 클릭시 이벤트
     func didTapLikeButton(in cell: HomeTableViewCell) {
         guard let indexPath = homeView.homeTableView.indexPath(for: cell) else { return }
         let post = posts[indexPath.row]
         print("버튼: \(post.description)")
-        // Handle the like action (e.g., update the model, UI, etc.)
     }
 
     // MARK: - UITableViewDelegate
 
+    // 셀 클릭시 이벤트
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Handle row selection
         tableView.deselectRow(at: indexPath, animated: true)
         print("버튼눌림 \(indexPath.row)")
+        let post = posts[indexPath.row]
+        let detailVC = DetailViewController()
+        detailVC.photos = post.photoURL
+        detailVC.userId = post.userId
+        detailVC.descriptions = post.description
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 
+    // 셀 높이 설정
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 200
     }
