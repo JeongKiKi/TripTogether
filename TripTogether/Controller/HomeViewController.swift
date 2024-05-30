@@ -38,9 +38,9 @@ class HomeViewController: UIViewController {
         let ap = AddPostViewController()
         navigationController?.pushViewController(ap, animated: true)
     }
-    
+
     private func fetchPosts() {
-        //업로드한 최신순으로 나열
+        // 업로드한 최신순으로 나열
         db.collection("posts").order(by: "timestamp", descending: true).getDocuments { [weak self] snapshot, error in
             guard let self = self else { return }
             if let error = error {
@@ -48,7 +48,11 @@ class HomeViewController: UIViewController {
                 return
             }
             guard let documents = snapshot?.documents else { return }
-            self.posts = documents.compactMap { Post(dictionary: $0.data()) }
+            self.posts = documents.compactMap { doc in
+                let data = doc.data()
+                return Post(documentId: doc.documentID, dictionary: data)
+            }
+            print(posts[1].documentId)
             self.homeView.homeTableView.reloadData()
         }
     }
@@ -65,14 +69,28 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomeCell", for: indexPath) as? HomeTableViewCell else {
             return UITableViewCell()
         }
+        let userId = UserDefaults.standard.uid ?? ""
+
         let post = posts[indexPath.row]
+        var updatedLikedBy = post.likedBy
+        var likedImages = UIImage(systemName: "hand.thumbsup.fill")
+        // 사용자가 이미 좋아요를 했는지 확인
+        if updatedLikedBy.contains(userId) {
+            // 이미 좋아요를 한 경우: 좋아요 취소
+            likedImages = UIImage(systemName: "hand.thumbsup.fill")
+        } else {
+            // 좋아요를 하지 않은 경우: 좋아요 추가
+            likedImages = UIImage(systemName: "hand.thumbsup")
+        }
         cell.descriptionLabel.text = post.description
         cell.nickNmaeLabel.text = post.userId
+        cell.likeButton.setImage(likedImages, for: .normal)
         if let url = URL(string: post.photoURL) {
             cell.photoSpot.loadImage(from: url)
         }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일 HH:mm"
+
         let date = post.timeStamp.dateValue()
         cell.timeLabel.text = dateFormatter.string(from: date)
         cell.delegate = self
@@ -84,6 +102,41 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
         guard let indexPath = homeView.homeTableView.indexPath(for: cell) else { return }
         let post = posts[indexPath.row]
         print("버튼: \(post.description)")
+        // 현재 사용자의 ID 가져오기
+        guard let userId = UserDefaults.standard.uid else { return }
+
+        var updatedLikes = post.likes
+        var updatedLikedBy = post.likedBy
+        var likedImages = UIImage(systemName: "hand.thumbsup.fill")
+        // 사용자가 이미 좋아요를 했는지 확인
+        if updatedLikedBy.contains(userId) {
+            // 이미 좋아요를 한 경우: 좋아요 취소
+            updatedLikes -= 1
+            updatedLikedBy.removeAll { $0 == userId }
+            likedImages = UIImage(systemName: "hand.thumbsup.fill")
+        } else {
+            // 좋아요를 하지 않은 경우: 좋아요 추가
+            updatedLikes += 1
+            updatedLikedBy.append(userId)
+            likedImages = UIImage(systemName: "hand.thumbsup")
+        }
+
+        // Firebase에 좋아요 정보 업데이트
+        let postRef = db.collection("posts").document(post.documentId)
+        postRef.updateData([
+            "likes": updatedLikes,
+            "likedBy": updatedLikedBy
+        ]) { [weak self] error in
+            if let error = error {
+                print("Error updating likes: \(error)")
+                return
+            }
+            // 로컬 데이터 업데이트 및 테이블 뷰 새로 고침
+            self?.posts[indexPath.row].likes = updatedLikes
+            self?.posts[indexPath.row].likedBy = updatedLikedBy
+            cell.likeButton.setImage(likedImages, for: .normal)
+            self?.homeView.homeTableView.reloadRows(at: [indexPath], with: .automatic)
+        }
     }
 
     // MARK: - UITableViewDelegate

@@ -84,7 +84,9 @@ class AddPostViewController: UIViewController {
             "imageUrl": imageUrl,
             "description": description,
             "userId": userId,
-            "timestamp": FieldValue.serverTimestamp()
+            "timestamp": FieldValue.serverTimestamp(),
+            "likes": 0,
+            "likedBy": []
         ]
 
         db.collection("posts").document(postId).setData(postData) { error in

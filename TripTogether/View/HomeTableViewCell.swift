@@ -114,5 +114,6 @@ class HomeTableViewCell: UITableViewCell {
 
     @objc func likeButtonTapped() {
         delegate?.didTapLikeButton(in: self)
+       
     }
 }

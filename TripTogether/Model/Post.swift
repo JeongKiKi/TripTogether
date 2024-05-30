@@ -8,15 +8,21 @@ import Firebase
 import FirebaseFirestore
 
 struct Post {
+    let documentId: String
     let photoURL: String
     let description: String
     let userId: String
     let timeStamp: Timestamp
-    init(dictionary: [String: Any]) {
+    var likes: Int
+    var likedBy: [String]
+    init(documentId: String, dictionary: [String: Any]) {
+        self.documentId = documentId
         self.photoURL = dictionary["imageUrl"] as? String ?? ""
         self.description = dictionary["description"] as? String ?? ""
         self.userId = dictionary["userId"] as? String ?? ""
         self.timeStamp = dictionary["timestamp"] as? Timestamp ?? Timestamp()
+        self.likes = dictionary["likes"] as? Int ?? 0
+        self.likedBy = dictionary["likedBy"] as? [String] ?? []
     }
 }
 
