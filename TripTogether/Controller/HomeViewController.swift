@@ -38,9 +38,10 @@ class HomeViewController: UIViewController {
         let ap = AddPostViewController()
         navigationController?.pushViewController(ap, animated: true)
     }
-
+    
     private func fetchPosts() {
-        db.collection("posts").getDocuments { [weak self] snapshot, error in
+        //업로드한 최신순으로 나열
+        db.collection("posts").order(by: "timestamp", descending: true).getDocuments { [weak self] snapshot, error in
             guard let self = self else { return }
             if let error = error {
                 print("Error fetching posts: \(error)")
