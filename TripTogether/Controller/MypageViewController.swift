@@ -13,17 +13,19 @@ class MypageViewController: UIViewController {
     let loginCheck = LoginCheck()
     var posts = [Post]()
     let db = Firestore.firestore()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "MyPage"
         view = mypageView
+
         mypageView.myPageTableView.register(MypageTableViewCell.self, forCellReuseIdentifier: "MyPageCell")
         mypageView.logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
 
         mypageView.myPageTableView.dataSource = self
         mypageView.myPageTableView.delegate = self
-        fetchPosts()
+        mypageView.myTotalPostInt.text = "\(posts.count)"
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -31,10 +33,12 @@ class MypageViewController: UIViewController {
         guard let userNickname = UserDefaults.standard.nickName else { return }
         guard let like = UserDefaults.standard.like else { return }
         guard let liked = UserDefaults.standard.liked else { return }
+
         // Ensure the nickname is updated before the view appears
-        mypageView.userName.text = UserDefaults.standard.nickName
-        mypageView.myTotalLikeInt.text = UserDefaults.standard.like
-        mypageView.othersTotalLikeInt.text = UserDefaults.standard.liked
+        mypageView.userName.text = userNickname
+        mypageView.myTotalLikeInt.text = like
+        mypageView.othersTotalLikeInt.text = liked
+        mypageView.myTotalPostInt.text = "\(posts.count)"
     }
 
     @objc private func logoutButtonTapped() {
@@ -45,6 +49,7 @@ class MypageViewController: UIViewController {
 
     override func loadView() {
         super.loadView()
+        fetchPosts()
     }
 
     private func fetchPosts() {
@@ -61,6 +66,7 @@ class MypageViewController: UIViewController {
                 guard let documents = snapshot?.documents else { return }
                 self.posts = documents.compactMap { Post(dictionary: $0.data()) }
                 self.mypageView.myPageTableView.reloadData()
+                mypageView.myTotalPostInt.text = "\(posts.count)"
             }
     }
 }
