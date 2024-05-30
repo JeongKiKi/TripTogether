@@ -70,6 +70,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
         if let url = URL(string: post.photoURL) {
             cell.photoSpot.loadImage(from: url)
         }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy년 MM월 dd일 HH:mm"
+        let date = post.timeStamp.dateValue()
+        cell.timeLabel.text = dateFormatter.string(from: date)
         cell.delegate = self
         return cell
     }
