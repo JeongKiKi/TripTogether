@@ -64,7 +64,10 @@ class MypageViewController: UIViewController {
                     return
                 }
                 guard let documents = snapshot?.documents else { return }
-                self.posts = documents.compactMap { Post(dictionary: $0.data()) }
+                self.posts = documents.compactMap { doc in
+                    let data = doc.data()
+                    return Post(documentId: doc.documentID, dictionary: data)
+                }
                 self.mypageView.myPageTableView.reloadData()
                 mypageView.myTotalPostInt.text = "\(posts.count)"
             }
