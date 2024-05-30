@@ -52,10 +52,18 @@ class HomeTableViewCell: UITableViewCell {
         btn.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return btn
     }()
-    
+
     lazy var nickNmaeLabel: UILabel = {
         let lb = UILabel()
         lb.text = "a"
+        lb.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
+        return lb
+    }()
+
+    lazy var timeLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = "a"
+        lb.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         return lb
     }()
 
@@ -69,6 +77,7 @@ class HomeTableViewCell: UITableViewCell {
         contentView.addSubview(photoSpot)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(nickNmaeLabel)
+        contentView.addSubview(timeLabel)
         contentView.addSubview(likeButton)
 
         photoSpot.snp.makeConstraints { make in
@@ -84,7 +93,14 @@ class HomeTableViewCell: UITableViewCell {
         }
         nickNmaeLabel.snp.makeConstraints { make in
             make.top.equalTo(likeButton.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.equalToSuperview().inset(20)
+            make.width.equalTo(100)
+            make.height.equalTo(30)
+            make.bottom.lessThanOrEqualToSuperview().offset(-10)
+        }
+        timeLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(nickNmaeLabel.snp.centerY)
+            make.trailing.equalTo(photoSpot.snp.trailing)
             make.height.equalTo(30)
             make.bottom.lessThanOrEqualToSuperview().offset(-10)
         }

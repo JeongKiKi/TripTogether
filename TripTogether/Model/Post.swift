@@ -11,10 +11,12 @@ struct Post {
     let photoURL: String
     let description: String
     let userId: String
+    let timeStamp: Timestamp
     init(dictionary: [String: Any]) {
         self.photoURL = dictionary["imageUrl"] as? String ?? ""
         self.description = dictionary["description"] as? String ?? ""
         self.userId = dictionary["userId"] as? String ?? ""
+        self.timeStamp = dictionary["timestamp"] as? Timestamp ?? Timestamp()
     }
 }
 
