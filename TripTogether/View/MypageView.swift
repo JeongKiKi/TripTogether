@@ -123,7 +123,8 @@ class MypageView: UIView {
         let vw = UIView()
         vw.addSubview(userName)
         vw.addSubview(likeStack)
-        vw.backgroundColor = .yellow
+        vw.layer.borderWidth = 0.5
+        vw.layer.cornerRadius = 10
         return vw
     }()
 
