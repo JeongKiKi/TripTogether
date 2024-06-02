@@ -103,7 +103,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
         print("버튼: \(post.description)")
         // 현재 사용자의 ID 가져오기
         guard let userId = UserDefaults.standard.uid else { return }
-
+        var userLikes = UserDefaults.standard.like ?? []
         var updatedLikes = post.likes
         var updatedLikedBy = post.likedBy
         var likedImages = UIImage(systemName: "hand.thumbsup.fill")
@@ -113,13 +113,28 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
             updatedLikes -= 1
             updatedLikedBy.removeAll { $0 == userId }
             likedImages = UIImage(systemName: "hand.thumbsup.fill")
+
+            // 좋아요 배열에서 해당 포스트 ID 제거
+            let userLikeRef = db.collection("userInfo").document(userId)
+            userLikeRef.updateData([
+                "like": FieldValue.arrayRemove([post.documentId])
+            ])
+            userLikes.removeAll { $0 == post.documentId }
         } else {
             // 좋아요를 하지 않은 경우: 좋아요 추가
             updatedLikes += 1
             updatedLikedBy.append(userId)
             likedImages = UIImage(systemName: "hand.thumbsup")
-        }
 
+            // 좋아요 배열에 해당 포스트 ID 추가
+            let userLikeRef = db.collection("userInfo").document(userId)
+            userLikeRef.updateData([
+                "like": FieldValue.arrayUnion([post.documentId])
+            ])
+            // 좋아요 배열에 해당 포스트 ID 추가
+            userLikes.append(post.documentId)
+        }
+        UserDefaults.standard.like = userLikes
         // Firebase에 좋아요 정보 업데이트
         let postRef = db.collection("posts").document(post.documentId)
         postRef.updateData([

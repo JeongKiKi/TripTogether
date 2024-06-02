@@ -25,6 +25,11 @@ class LikeViewController: UIViewController {
     }
 
     private func fetchPosts() {
+        guard let userLikes = UserDefaults.standard.like else {
+            print("No liked posts found in UserDefaults")
+            return
+        }
+
         db.collection("posts").getDocuments { [weak self] snapshot, error in
             guard let self = self else { return }
             if let error = error {
@@ -34,7 +39,9 @@ class LikeViewController: UIViewController {
             guard let documents = snapshot?.documents else { return }
             self.posts = documents.compactMap { doc in
                 let data = doc.data()
-                return Post(documentId: doc.documentID, dictionary: data)
+                let post = Post(documentId: doc.documentID, dictionary: data)
+                // 좋아요한 post만 필터링
+                return userLikes.contains(post.documentId) ? post : nil
             }
             self.likeView.likeCollectionView.reloadData()
         }
