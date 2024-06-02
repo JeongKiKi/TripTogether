@@ -30,13 +30,26 @@ class HomeTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 //        contentView.addSubview(homeView)
         setupUI()
+        settingLayer()
+        
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        //셀의 테두리 설정
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    //셀의 테두리 설정
+    func settingLayer(){
+        contentView.layer.borderWidth = 1
+        contentView.layer.cornerRadius = 10
+        contentView.layer.borderColor = UIColor.blue.cgColor
+    }
     lazy var photoSpot: UIImageView = {
         let im = UIImageView()
         im.contentMode = .scaleAspectFill
@@ -53,6 +66,20 @@ class HomeTableViewCell: UITableViewCell {
         return btn
     }()
 
+    lazy var nickNmaeLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = "a"
+        lb.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
+        return lb
+    }()
+
+    lazy var timeLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = "a"
+        lb.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+        return lb
+    }()
+
     lazy var descriptionLabel: UILabel = {
         let lb = UILabel()
         lb.text = "a"
@@ -62,6 +89,8 @@ class HomeTableViewCell: UITableViewCell {
     func setupUI() {
         contentView.addSubview(photoSpot)
         contentView.addSubview(descriptionLabel)
+        contentView.addSubview(nickNmaeLabel)
+        contentView.addSubview(timeLabel)
         contentView.addSubview(likeButton)
 
         photoSpot.snp.makeConstraints { make in
@@ -75,8 +104,21 @@ class HomeTableViewCell: UITableViewCell {
             $0.top.equalTo(photoSpot.snp.bottom).offset(5)
             $0.width.height.equalTo(30)
         }
-        descriptionLabel.snp.makeConstraints { make in
+        nickNmaeLabel.snp.makeConstraints { make in
             make.top.equalTo(likeButton.snp.bottom).offset(10)
+            make.leading.equalToSuperview().inset(20)
+            make.width.equalTo(100)
+            make.height.equalTo(30)
+            make.bottom.lessThanOrEqualToSuperview().offset(-10)
+        }
+        timeLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(nickNmaeLabel.snp.centerY)
+            make.trailing.equalTo(photoSpot.snp.trailing)
+            make.height.equalTo(30)
+            make.bottom.lessThanOrEqualToSuperview().offset(-10)
+        }
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(nickNmaeLabel.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(30)
             make.bottom.lessThanOrEqualToSuperview().offset(-10)

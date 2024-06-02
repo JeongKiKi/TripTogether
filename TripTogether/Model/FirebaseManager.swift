@@ -7,10 +7,10 @@
 
 import Foundation
 
-class FirebaseManager {
-    let email = ""
-    let like = ""
-    let liked = ""
-    let nickName = ""
-    let uid = ""
-}
+// class FirebaseManager {
+//    let email = ""
+//    let like = ""
+//    let liked = ""
+//    let nickName = ""
+//    let uid = ""
+// }

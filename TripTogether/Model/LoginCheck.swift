@@ -42,18 +42,18 @@ extension UserDefaults {
         }
     }
 
-    var like: String? {
+    var like: [String]? {
         get {
-            return string(forKey: Keys.like)
+            return array(forKey: Keys.like) as? [String]
         }
         set {
             set(newValue, forKey: Keys.like)
         }
     }
 
-    var liked: String? {
+    var liked: [String]? {
         get {
-            return string(forKey: Keys.liked)
+            return array(forKey: Keys.liked) as? [String]
         }
         set {
             set(newValue, forKey: Keys.liked)

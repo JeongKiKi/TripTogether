@@ -34,7 +34,8 @@ class AddPostViewController: UIViewController {
         guard let des = addPostView.photoTextfield.text else { return }
         // firebase에 업로드
         guard let selectedImage = addPostView.photoImage.image else { return }
-        addPost(image: selectedImage, description: des, userId: "test")
+        guard let userNickname = UserDefaults.standard.nickName else { return }
+        addPost(image: selectedImage, description: des, userId: userNickname)
         navigationController?.popViewController(animated: true)
     }
 
@@ -83,7 +84,9 @@ class AddPostViewController: UIViewController {
             "imageUrl": imageUrl,
             "description": description,
             "userId": userId,
-            "timestamp": FieldValue.serverTimestamp()
+            "timestamp": FieldValue.serverTimestamp(),
+            "likes": 0,
+            "likedBy": []
         ]
 
         db.collection("posts").document(postId).setData(postData) { error in
