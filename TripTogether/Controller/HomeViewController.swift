@@ -16,7 +16,7 @@ class HomeViewController: UIViewController {
     let db = Firestore.firestore()
 
     override func viewDidLoad() {
-        title = "Home"
+        title = "TripTogether"
         super.viewDidLoad()
         view.backgroundColor = .white
         view = homeView
