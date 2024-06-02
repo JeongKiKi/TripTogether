@@ -64,8 +64,6 @@ class MakeEmailViewController: UIViewController {
                     self.navigationController?.popViewController(animated: true)
                 }
             }
-            // 로그인 상태에 따라 화면 전환
-            self.loginCheck.switchToMainTabBarController()
         }
     }
 }

@@ -22,6 +22,11 @@ class LoginView: UIView {
     lazy var idTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "아이디를 입력해주세요"
+        tf.autocorrectionType = .no // 자동 수정 활성화 여부
+        tf.spellCheckingType = .no // 맞춤법 검사 활성화 여부
+        tf.autocapitalizationType = .none // 자동 대문자 활성화 여부
+        tf.clearButtonMode = .always // 입력내용 한번에 지우는 x버튼(오른쪽)
+        tf.clearsOnBeginEditing = false // 편집 시 기존 텍스트필드값 제거?
         return tf
     }()
 
@@ -36,6 +41,12 @@ class LoginView: UIView {
     lazy var passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "비밀번호를 입력해주세요"
+        tf.isSecureTextEntry = true
+        tf.autocorrectionType = .no // 자동 수정 활성화 여부
+        tf.spellCheckingType = .no // 맞춤법 검사 활성화 여부
+        tf.autocapitalizationType = .none // 자동 대문자 활성화 여부
+        tf.clearButtonMode = .always // 입력내용 한번에 지우는 x버튼(오른쪽)
+        tf.clearsOnBeginEditing = false // 편집 시 기존 텍스트필드값 제거?
         return tf
     }()
 

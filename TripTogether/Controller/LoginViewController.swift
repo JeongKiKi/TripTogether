@@ -51,7 +51,7 @@ class LoginViewController: UIViewController {
             self.fetchUserData(uid: uid)
         }
     }
-
+    //uid를 통해 유저 정보불러와 유저디폴트로 저장
     private func fetchUserData(uid: String) {
         db.collection("userInfo").document(uid).getDocument { [weak self] document, error in
             guard let self = self else { return }
