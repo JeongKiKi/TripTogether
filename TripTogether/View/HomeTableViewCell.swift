@@ -31,12 +31,11 @@ class HomeTableViewCell: UITableViewCell {
 //        contentView.addSubview(homeView)
         setupUI()
         settingLayer()
-        
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        //셀의 테두리 설정
+        // 셀의 테두리 설정
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
 
@@ -44,12 +43,14 @@ class HomeTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    //셀의 테두리 설정
-    func settingLayer(){
+
+    // 셀의 테두리 설정
+    func settingLayer() {
         contentView.layer.borderWidth = 1
         contentView.layer.cornerRadius = 10
         contentView.layer.borderColor = UIColor.blue.cgColor
     }
+
     lazy var photoSpot: UIImageView = {
         let im = UIImageView()
         im.contentMode = .scaleAspectFill
@@ -96,7 +97,7 @@ class HomeTableViewCell: UITableViewCell {
         photoSpot.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(200)
+            make.height.equalTo(200).priority(.high) // 높이 제약 조건에 우선순위를 부여
             make.bottom.lessThanOrEqualToSuperview().offset(-10) // Ensure the bottom margin is respected
         }
         likeButton.snp.makeConstraints {
