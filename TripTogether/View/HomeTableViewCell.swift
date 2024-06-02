@@ -30,13 +30,26 @@ class HomeTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 //        contentView.addSubview(homeView)
         setupUI()
+        settingLayer()
+        
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        //셀의 테두리 설정
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    //셀의 테두리 설정
+    func settingLayer(){
+        contentView.layer.borderWidth = 1
+        contentView.layer.cornerRadius = 10
+        contentView.layer.borderColor = UIColor.blue.cgColor
+    }
     lazy var photoSpot: UIImageView = {
         let im = UIImageView()
         im.contentMode = .scaleAspectFill
@@ -114,6 +127,5 @@ class HomeTableViewCell: UITableViewCell {
 
     @objc func likeButtonTapped() {
         delegate?.didTapLikeButton(in: self)
-       
     }
 }
