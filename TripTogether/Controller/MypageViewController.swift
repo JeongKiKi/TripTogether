@@ -36,8 +36,8 @@ class MypageViewController: UIViewController {
 
         // Ensure the nickname is updated before the view appears
         mypageView.userName.text = userNickname
-        mypageView.myTotalLikeInt.text = like
-        mypageView.othersTotalLikeInt.text = liked
+        mypageView.myTotalLikeInt.text = String(like.count)
+        mypageView.othersTotalLikeInt.text = String(liked.count)
         mypageView.myTotalPostInt.text = "\(posts.count)"
     }
 

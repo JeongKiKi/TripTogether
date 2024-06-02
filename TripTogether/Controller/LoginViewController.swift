@@ -63,8 +63,8 @@ class LoginViewController: UIViewController {
             guard let document = document, document.exists,
                   let data = document.data(),
                   let nickName = data["nickName"] as? String,
-                  let like = data["like"] as? String,
-                  let liked = data["liked"] as? String
+                  let like = data["like"] as? [String],
+                  let liked = data["liked"] as? [String]
             else {
                 print("User data not found or malformed")
                 return
