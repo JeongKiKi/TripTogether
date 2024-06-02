@@ -24,6 +24,11 @@ class LikeViewController: UIViewController {
         fetchPosts()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchPosts()
+    }
+
     private func fetchPosts() {
         guard let userLikes = UserDefaults.standard.like else {
             print("No liked posts found in UserDefaults")
@@ -66,6 +71,17 @@ extension LikeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             cell.imageView.loadImage(from: url)
         }
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let post = posts[indexPath.row]
+        print(post.userId)
+        let detailVC = DetailViewController()
+        detailVC.post = post
+        detailVC.photos = post.photoURL
+        detailVC.userId = post.userId
+        detailVC.descriptions = post.description
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 
     func collectionView(
