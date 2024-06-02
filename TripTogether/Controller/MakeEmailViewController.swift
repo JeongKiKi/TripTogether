@@ -48,14 +48,14 @@ class MakeEmailViewController: UIViewController {
             }
             // 문서를 uid로 지정하기위해 uid 가져오기
             guard let uid = authResult?.user.uid else { return }
-            
+
             // 로그인 상태 저장
             UserDefaults.standard.set(true, forKey: "isLoggedIn")
 
             // 회원가입 userinfo를 firebasestore에 저장
             db.collection("userInfo").document(uid).setData(["email": email,
                                                              "nickName": nickname,
-                                                             "like": "0", "liked": "0", "uid": uid])
+                                                             "like": [], "liked": [], "uid": uid])
             { error in
                 if let error = error {
                     print("There was an issue saving data to firestore, \(error)")

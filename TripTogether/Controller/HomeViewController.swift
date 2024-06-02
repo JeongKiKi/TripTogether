@@ -52,7 +52,6 @@ class HomeViewController: UIViewController {
                 let data = doc.data()
                 return Post(documentId: doc.documentID, dictionary: data)
             }
-            print(posts[1].documentId)
             self.homeView.homeTableView.reloadData()
         }
     }
