@@ -28,6 +28,11 @@ class HomeViewController: UIViewController {
         fetchPosts()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchPosts()
+    }
+
     private func setupNavigationBar() {
         let rightButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(rightButtonTapped))
         navigationItem.rightBarButtonItem = rightButton
@@ -71,7 +76,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
         let userId = UserDefaults.standard.uid ?? ""
 
         let post = posts[indexPath.row]
-        var updatedLikedBy = post.likedBy
+        let updatedLikedBy = post.likedBy
         var likedImages = UIImage(systemName: "hand.thumbsup.fill")
         // 사용자가 이미 좋아요를 했는지 확인
         if updatedLikedBy.contains(userId) {
@@ -162,6 +167,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
         print("버튼눌림 \(indexPath.row)")
         let post = posts[indexPath.row]
         let detailVC = DetailViewController()
+        detailVC.post = post
         detailVC.photos = post.photoURL
         detailVC.userId = post.userId
         detailVC.descriptions = post.description
