@@ -17,6 +17,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupActions()
+        setupTextFieldDelegates()
+        updateLoginButtonState()
     }
 
     override func loadView() {
@@ -43,6 +45,11 @@ class LoginViewController: UIViewController {
             if let error = error {
                 print("Error logging in: \(error.localizedDescription)")
                 print("아이디 비번 틀림")
+                loginView.idTextField.text = ""
+                loginView.passwordTextField.text = ""
+                loginView.idTextField.placeholder = "아이디를 확인해주세요"
+                loginView.passwordTextField.placeholder = "비밀번호를 확인해주세요"
+                updateLoginButtonState()
                 return
             }
 
@@ -51,7 +58,8 @@ class LoginViewController: UIViewController {
             self.fetchUserData(uid: uid)
         }
     }
-    //uid를 통해 유저 정보불러와 유저디폴트로 저장
+
+    // uid를 통해 유저 정보불러와 유저디폴트로 저장
     private func fetchUserData(uid: String) {
         db.collection("userInfo").document(uid).getDocument { [weak self] document, error in
             guard let self = self else { return }
@@ -88,6 +96,41 @@ class LoginViewController: UIViewController {
     @objc private func findPasswordButtonTapped() {
         print("비밀번호 찾기 버튼 눌림")
     }
+    
+    //FieldDelegates설정
+    private func setupTextFieldDelegates() {
+        loginView.idTextField.delegate = self
+        loginView.passwordTextField.delegate = self
+    }
 
-    // 로그인이 되어있는 경우
+    // 로그인버튼 활성화에 따른 버튼 ui변경
+    func loginBtnOn() {
+        if loginView.loginButton.isEnabled {
+            loginView.loginButton.backgroundColor = .systemBlue
+        } else {
+            loginView.loginButton.backgroundColor = .lightGray
+        }
+    }
+
+    // 아이디 비번 입력에 따라 로그인버튼 활성화
+    private func updateLoginButtonState() {
+        let isEmailFilled = !(loginView.idTextField.text?.isEmpty ?? true)
+        let isPasswordFilled = !(loginView.passwordTextField.text?.isEmpty ?? true)
+        loginView.loginButton.isEnabled = isEmailFilled && isPasswordFilled
+        loginBtnOn()
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    //텍스트 필드의 내용이 변경될 때마다 호출하여 버튼 상태 업데이트
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        DispatchQueue.main.async {
+            self.updateLoginButtonState()
+        }
+        return true
+    }
+    //텍스트필드 내용 입력이 끝났을 때 상태 업데이트
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateLoginButtonState()
+    }
 }
