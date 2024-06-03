@@ -6,13 +6,16 @@
 //
 
 import FirebaseFirestore
+import FirebaseStorage
 import UIKit
+
 class MypageViewController: UIViewController {
     let mypageView = MypageView()
     let dummyModel = DummyModel()
     let loginCheck = LoginCheck()
     var posts = [Post]()
     let db = Firestore.firestore()
+    let storage = Storage.storage()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,14 +139,26 @@ extension MypageViewController: UITableViewDataSource, UITableViewDelegate, Mypa
 
     // 게시물 삭제
     func deletePost(_ post: Post, at indexPath: IndexPath) {
-        db.collection("posts").document(post.documentId).delete { [weak self] error in
+        let storageRef = storage.reference(forURL: post.photoURL)
+        // Storage에서 사진 삭제
+        storageRef.delete { [weak self] error in
             if let error = error {
-                print("Error deleting post: \(error)")
+                print("Error deleting image: \(error)")
                 return
             }
-            self?.posts.remove(at: indexPath.row)
-            self?.mypageView.myPageTableView.deleteRows(at: [indexPath], with: .automatic)
-            self?.mypageView.myTotalPostInt.text = "\(self?.posts.count ?? 0)"
+            print("Image deleted successfully")
+
+            // Firestore에서 문서 삭제
+            self?.db.collection("posts").document(post.documentId).delete { error in
+                if let error = error {
+                    print("Error deleting post: \(error)")
+                    return
+                }
+                print("Post deleted successfully")
+                self?.posts.remove(at: indexPath.row)
+                self?.mypageView.myPageTableView.deleteRows(at: [indexPath], with: .automatic)
+                self?.mypageView.myTotalPostInt.text = "\(self?.posts.count ?? 0)"
+            }
         }
     }
 
