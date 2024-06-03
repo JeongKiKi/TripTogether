@@ -41,7 +41,7 @@ class MakeEmailView: UIView {
 
     lazy var emailLabel: UILabel = {
         let lb = UILabel()
-        lb.text = "aaa"
+        lb.text = "사용할 이메일을 입력해주세요"
         return lb
     }()
 
@@ -77,7 +77,7 @@ class MakeEmailView: UIView {
 
     lazy var passwordLabel: UILabel = {
         let lb = UILabel()
-        lb.text = "bb"
+        lb.text = "6글자 이상의 비밀번호를 입력해주세요"
         return lb
     }()
 
@@ -113,7 +113,7 @@ class MakeEmailView: UIView {
 
     lazy var passwordCheckLabel: UILabel = {
         let lb = UILabel()
-        lb.text = "ccc"
+        lb.text = "비밀번호를 다시 입력해주세요"
         return lb
     }()
 
@@ -148,7 +148,7 @@ class MakeEmailView: UIView {
 
     lazy var nickNameLabel: UILabel = {
         let lb = UILabel()
-        lb.text = "aaa"
+        lb.text = "닉네임을 입력해주세요"
         return lb
     }()
 
