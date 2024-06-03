@@ -41,6 +41,7 @@ class HomeViewController: UIViewController {
     @objc private func rightButtonTapped() {
         print("오른쪽 버튼 눌림")
         let ap = AddPostViewController()
+        ap.isEditingPost = false
         navigationController?.pushViewController(ap, animated: true)
     }
 

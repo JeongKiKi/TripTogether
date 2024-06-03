@@ -12,16 +12,27 @@ import UIKit
 class AddPostViewController: UIViewController {
     let addPostView = AddPostView()
     let storage = Storage.storage()
+    var post: Post?
+    var isEditingPost = false
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .blue
         view = addPostView
         setupActions()
         setupNavigationBar()
+        if let post = post {
+            isEditingPost = true
+            if let url = URL(string: post.photoURL) {
+                addPostView.photoImage.loadImage(from: url)
+            }
+            addPostView.photoTextfield.text = post.description
+        } else {
+            addPostView.photoImage.image = UIImage(systemName: "photo")
+        }
     }
 
     private func setupNavigationBar() {
-        let rightButton = UIBarButtonItem(image: .add, style: .plain, target: self, action: #selector(postButtonTapped))
+        let rightButton = UIBarButtonItem(title: isEditingPost ? "수정" : "추가", style: .plain, target: self, action: #selector(postButtonTapped))
         navigationItem.rightBarButtonItem = rightButton
     }
 
@@ -35,7 +46,12 @@ class AddPostViewController: UIViewController {
         // firebase에 업로드
         guard let selectedImage = addPostView.photoImage.image else { return }
         guard let userNickname = UserDefaults.standard.nickName else { return }
-        addPost(image: selectedImage, description: des, userId: userNickname)
+
+        if isEditingPost, let post = post {
+            updatePost(post: post, newImage: selectedImage, newDescription: des)
+        } else {
+            addPost(image: selectedImage, description: des, userId: userNickname)
+        }
         navigationController?.popViewController(animated: true)
     }
 
@@ -94,6 +110,34 @@ class AddPostViewController: UIViewController {
                 print("Error saving post: \(error)")
             } else {
                 print("Post successfully saved.")
+            }
+        }
+    }
+
+    // Firestore에서 게시글 수정
+    func updatePost(post: Post, newImage: UIImage, newDescription: String) {
+        uploadImage(newImage) { result in
+            switch result {
+            case .success(let imageUrl):
+                self.updatePostInFirestore(postId: post.documentId, imageUrl: imageUrl, description: newDescription)
+            case .failure(let error):
+                print("Error uploading image: \(error)")
+            }
+        }
+    }
+
+    // Firestore에서 게시글 데이터 업데이트
+    func updatePostInFirestore(postId: String, imageUrl: String, description: String) {
+        let db = Firestore.firestore()
+        db.collection("posts").document(postId).updateData([
+            "imageUrl": imageUrl,
+            "description": description,
+            "timestamp": FieldValue.serverTimestamp()
+        ]) { error in
+            if let error = error {
+                print("Error updating post: \(error)")
+            } else {
+                print("Post successfully updated.")
             }
         }
     }
