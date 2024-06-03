@@ -30,13 +30,17 @@ class MypageViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchPosts()
         guard let userNickname = UserDefaults.standard.nickName else { return }
         guard let like = UserDefaults.standard.like else { return }
-        guard let liked = UserDefaults.standard.liked else { return }
+        var liked = 0
+        for i in posts {
+            liked += i.likes
+        }
 
         // Ensure the nickname is updated before the view appears
         mypageView.userName.text = userNickname
-        mypageView.myTotalLikeInt.text = String(liked.count)
+        mypageView.myTotalLikeInt.text = String(liked)
         mypageView.othersTotalLikeInt.text = String(like.count)
         mypageView.myTotalPostInt.text = "\(posts.count)"
     }
