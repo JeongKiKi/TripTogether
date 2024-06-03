@@ -9,7 +9,8 @@ import SnapKit
 import UIKit
 
 protocol MypageTableViewCellDelegate: AnyObject {
-    func didTapOptionButton(in cell: MypageTableViewCell)
+    func didTapLikeButton(in cell: MypageTableViewCell)
+    func optionButtonTapped(in cell: MypageTableViewCell)
 }
 
 class MypageTableViewCell: UITableViewCell {
@@ -44,9 +45,18 @@ class MypageTableViewCell: UITableViewCell {
         return im
     }()
 
-    lazy var optionButton: UIButton = {
+    lazy var likeButton: UIButton = {
         let btn = UIButton()
         let likeImage = UIImage(systemName: "hand.thumbsup")
+        btn.setImage(likeImage, for: .normal)
+        btn.tintColor = .blue
+        btn.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
+        return btn
+    }()
+
+    lazy var optionButton: UIButton = {
+        let btn = UIButton()
+        let likeImage = UIImage(systemName: "list.bullet.circle")
         btn.setImage(likeImage, for: .normal)
         btn.tintColor = .blue
         btn.addTarget(self, action: #selector(optionButtonTapped), for: .touchUpInside)
@@ -62,6 +72,7 @@ class MypageTableViewCell: UITableViewCell {
     func setupUI() {
         contentView.addSubview(myPhotoSpot)
         contentView.addSubview(myDescriptionLabel)
+        contentView.addSubview(likeButton)
         contentView.addSubview(optionButton)
 
         myPhotoSpot.snp.makeConstraints { make in
@@ -70,20 +81,29 @@ class MypageTableViewCell: UITableViewCell {
             make.height.equalTo(200)
             make.bottom.lessThanOrEqualToSuperview().offset(-10) // Ensure the bottom margin is respected
         }
-        optionButton.snp.makeConstraints {
+        likeButton.snp.makeConstraints {
             $0.leading.equalTo(myDescriptionLabel.snp.leading)
             $0.top.equalTo(myPhotoSpot.snp.bottom).offset(5)
             $0.width.height.equalTo(30)
         }
         myDescriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(optionButton.snp.bottom).offset(10)
+            make.top.equalTo(likeButton.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(30)
             make.bottom.lessThanOrEqualToSuperview().offset(-10)
         }
+        optionButton.snp.makeConstraints {
+            $0.trailing.equalTo(myPhotoSpot.snp.trailing).offset(-10)
+            $0.top.equalTo(myPhotoSpot.snp.top).offset(10)
+            $0.width.height.equalTo(30)
+        }
+    }
+
+    @objc func didTapLikeButton() {
+        delegate?.didTapLikeButton(in: self)
     }
 
     @objc func optionButtonTapped() {
-        delegate?.didTapOptionButton(in: self)
+        delegate?.optionButtonTapped(in: self)
     }
 }

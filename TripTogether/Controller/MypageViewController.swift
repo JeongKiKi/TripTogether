@@ -96,11 +96,55 @@ extension MypageViewController: UITableViewDataSource, UITableViewDelegate, Mypa
         return cell
     }
 
-    func didTapOptionButton(in cell: MypageTableViewCell) {
+    func didTapLikeButton(in cell: MypageTableViewCell) {
         guard let indexPath = mypageView.myPageTableView.indexPath(for: cell) else { return }
         let post = posts[indexPath.row]
         print("버튼: \(post.description)")
         // Handle the like action (e.g., update the model, UI, etc.)
+    }
+
+    func optionButtonTapped(in cell: MypageTableViewCell) {
+        guard let indexPath = mypageView.myPageTableView.indexPath(for: cell) else { return }
+        let post = posts[indexPath.row]
+
+        let alertController = UIAlertController(title: "옵션", message: "선택하세요", preferredStyle: .actionSheet)
+
+        let editAction = UIAlertAction(title: "수정", style: .default) { _ in
+            print("수정 버튼 눌림: \(post.description)")
+            // 수정 기능 구현
+            let ad = AddPostViewController()
+            ad.post = post
+            ad.isEditingPost = true
+            self.navigationController?.pushViewController(ad, animated: true)
+        }
+
+        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { _ in
+            print("삭제 버튼 눌림: \(post.description)")
+            self.deletePost(post, at: indexPath)
+        }
+
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel) { _ in
+            print("취소 버튼 눌림")
+        }
+
+        alertController.addAction(editAction)
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    // 게시물 삭제
+    func deletePost(_ post: Post, at indexPath: IndexPath) {
+        db.collection("posts").document(post.documentId).delete { [weak self] error in
+            if let error = error {
+                print("Error deleting post: \(error)")
+                return
+            }
+            self?.posts.remove(at: indexPath.row)
+            self?.mypageView.myPageTableView.deleteRows(at: [indexPath], with: .automatic)
+            self?.mypageView.myTotalPostInt.text = "\(self?.posts.count ?? 0)"
+        }
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
