@@ -67,8 +67,13 @@ extension LikeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return UICollectionViewCell()
         }
         let post = posts[indexPath.row]
+//        if let url = URL(string: post.photoURL) {
+//            cell.imageView.loadImage(from: url)
+//        }
         if let url = URL(string: post.photoURL) {
-            cell.imageView.loadImage(from: url)
+            cell.imageView.loadImage(from: url) { [weak self] _ in
+                // 필요 시 이미지 로드 완료 후 추가 작업 수행
+            }
         }
         return cell
     }

@@ -25,13 +25,30 @@ struct Post {
         self.likedBy = dictionary["likedBy"] as? [String] ?? []
     }
 }
-
+//기존
+//extension UIImageView {
+//    func loadImage(from url: URL) {
+//        DispatchQueue.global().async { [weak self] in
+//            if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+//                DispatchQueue.main.async {
+//                    self?.image = image
+//                }
+//            }
+//        }
+//    }
+//}
+//이미지 저장을 위한 새로운 코드
 extension UIImageView {
-    func loadImage(from url: URL) {
-        DispatchQueue.global().async { [weak self] in
+    func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
+        DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                 DispatchQueue.main.async {
-                    self?.image = image
+                    self.image = image
+                    completion(image)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(nil)
                 }
             }
         }
