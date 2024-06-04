@@ -91,8 +91,13 @@ extension MypageViewController: UITableViewDataSource, UITableViewDelegate, Mypa
             return UITableViewCell()
         }
         let post = posts[indexPath.row]
+//        if let url = URL(string: post.photoURL) {
+//            cell.myPhotoSpot.loadImage(from: url)
+//        }
         if let url = URL(string: post.photoURL) {
-            cell.myPhotoSpot.loadImage(from: url)
+            cell.myPhotoSpot.loadImage(from: url) { [weak self] _ in
+                // 필요 시 이미지 로드 완료 후 추가 작업 수행
+            }
         }
         cell.myDescriptionLabel.text = post.description
         cell.delegate = self

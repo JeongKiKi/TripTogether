@@ -14,6 +14,8 @@ class AddPostViewController: UIViewController {
     let storage = Storage.storage()
     var post: Post?
     var isEditingPost = false
+    var originalImage: UIImage?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .blue
@@ -23,7 +25,9 @@ class AddPostViewController: UIViewController {
         if let post = post {
             isEditingPost = true
             if let url = URL(string: post.photoURL) {
-                addPostView.photoImage.loadImage(from: url)
+                addPostView.photoImage.loadImage(from: url) { [weak self] image in
+                    self?.originalImage = image // 비동기적으로 원래 이미지를 저장
+                }
             }
             addPostView.photoTextfield.text = post.description
         } else {
@@ -48,8 +52,15 @@ class AddPostViewController: UIViewController {
         guard let userNickname = UserDefaults.standard.nickName else { return }
 
         if isEditingPost, let post = post {
-            updatePost(post: post, newImage: selectedImage, newDescription: des)
+            // 사진이 변경되었는지 확인
+            if addPostView.photoImage.image == originalImage {
+                updatePost(post: post, newImage: nil, newDescription: des)
+            } else {
+                guard let selectedImage = addPostView.photoImage.image else { return }
+                updatePost(post: post, newImage: selectedImage, newDescription: des)
+            }
         } else {
+            guard let selectedImage = addPostView.photoImage.image else { return }
             addPost(image: selectedImage, description: des, userId: userNickname)
         }
         navigationController?.popViewController(animated: true)
@@ -115,13 +126,33 @@ class AddPostViewController: UIViewController {
     }
 
     // Firestore에서 게시글 수정
-    func updatePost(post: Post, newImage: UIImage, newDescription: String) {
-        uploadImage(newImage) { result in
-            switch result {
-            case .success(let imageUrl):
-                self.updatePostInFirestore(postId: post.documentId, imageUrl: imageUrl, description: newDescription)
-            case .failure(let error):
-                print("Error uploading image: \(error)")
+    func updatePost(post: Post, newImage: UIImage?, newDescription: String) {
+        if let newImage = newImage {
+            // 새 이미지가 있으면 업로드
+            uploadImage(newImage) { [weak self] result in
+                switch result {
+                case .success(let imageUrl):
+                    self?.updatePostInFirestore(postId: post.documentId, imageUrl: imageUrl, description: newDescription)
+                    // 기존 이미지 삭제
+                    self?.deleteOldImage(post.photoURL)
+                case .failure(let error):
+                    print("Error uploading image: \(error)")
+                }
+            }
+        } else {
+            // 새 이미지가 없으면 기존 이미지 URL 사용
+            updatePostInFirestore(postId: post.documentId, imageUrl: post.photoURL, description: newDescription)
+        }
+    }
+
+    // 기존 이미지 삭제
+    func deleteOldImage(_ imageUrl: String) {
+        let storageRef = storage.reference(forURL: imageUrl)
+        storageRef.delete { error in
+            if let error = error {
+                print("Error deleting old image: \(error)")
+            } else {
+                print("Old image deleted successfully")
             }
         }
     }

@@ -99,8 +99,13 @@ class DetailViewController: UIViewController {
         detailView.nickNmaeLabel.text = userId
         detailView.descriptionLabel.text = descriptions
         guard let photos = photos else { return }
+//        if let url = URL(string: photos) {
+//            detailView.photoSpot.loadImage(from: url)
+//        }
         if let url = URL(string: photos) {
-            detailView.photoSpot.loadImage(from: url)
+            detailView.photoSpot.loadImage(from: url) { [weak self] _ in
+                // 필요 시 이미지 로드 완료 후 추가 작업 수행
+            }
         }
     }
 }
