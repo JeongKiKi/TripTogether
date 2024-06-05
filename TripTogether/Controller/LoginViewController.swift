@@ -24,6 +24,7 @@ class LoginViewController: UIViewController {
     override func loadView() {
         super.loadView()
         view = loginView
+        view.backgroundColor = .appColor
     }
 
     private func setupActions() {
@@ -96,8 +97,8 @@ class LoginViewController: UIViewController {
     @objc private func findPasswordButtonTapped() {
         print("비밀번호 찾기 버튼 눌림")
     }
-    
-    //FieldDelegates설정
+
+    // FieldDelegates설정
     private func setupTextFieldDelegates() {
         loginView.idTextField.delegate = self
         loginView.passwordTextField.delegate = self
@@ -122,14 +123,15 @@ class LoginViewController: UIViewController {
 }
 
 extension LoginViewController: UITextFieldDelegate {
-    //텍스트 필드의 내용이 변경될 때마다 호출하여 버튼 상태 업데이트
+    // 텍스트 필드의 내용이 변경될 때마다 호출하여 버튼 상태 업데이트
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         DispatchQueue.main.async {
             self.updateLoginButtonState()
         }
         return true
     }
-    //텍스트필드 내용 입력이 끝났을 때 상태 업데이트
+
+    // 텍스트필드 내용 입력이 끝났을 때 상태 업데이트
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateLoginButtonState()
     }
