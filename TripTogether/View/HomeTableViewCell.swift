@@ -48,7 +48,7 @@ class HomeTableViewCell: UITableViewCell {
     func settingLayer() {
         contentView.layer.borderWidth = 1
         contentView.layer.cornerRadius = 10
-        contentView.layer.borderColor = UIColor.blue.cgColor
+        contentView.layer.borderColor = UIColor.appColor.cgColor
     }
 
     lazy var photoSpot: UIImageView = {

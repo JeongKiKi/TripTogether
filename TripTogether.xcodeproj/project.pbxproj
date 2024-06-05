@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6865FDF92C0FF5FB00376635 /* AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6865FDF82C0FF5FB00376635 /* AppColor.swift */; };
 		68D2D9702BFB519E009E04FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D96F2BFB519E009E04FA /* AppDelegate.swift */; };
 		68D2D9722BFB519E009E04FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9712BFB519E009E04FA /* SceneDelegate.swift */; };
 		68D2D9742BFB519E009E04FA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D2D9732BFB519E009E04FA /* ViewController.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6865FDF82C0FF5FB00376635 /* AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColor.swift; sourceTree = "<group>"; };
 		68D2D96C2BFB519E009E04FA /* TripTogether.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TripTogether.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68D2D96F2BFB519E009E04FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68D2D9712BFB519E009E04FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				68D2D9BB2C05D086009E04FA /* Post.swift */,
 				68D2D9A32BFD7CD7009E04FA /* LoginCheck.swift */,
 				68D2D9B02C002D4D009E04FA /* FirebaseManager.swift */,
+				6865FDF82C0FF5FB00376635 /* AppColor.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				68D2D9A02BFCC383009E04FA /* LikeCollectionViewCell.swift in Sources */,
 				68D2D99C2BFC3A78009E04FA /* HomeTableViewCell.swift in Sources */,
 				68D2D9C02C070EBC009E04FA /* DetailViewController.swift in Sources */,
+				6865FDF92C0FF5FB00376635 /* AppColor.swift in Sources */,
 				68D2D9702BFB519E009E04FA /* AppDelegate.swift in Sources */,
 				68D2D9722BFB519E009E04FA /* SceneDelegate.swift in Sources */,
 				68D2D9BE2C070EA6009E04FA /* DetailView.swift in Sources */,
