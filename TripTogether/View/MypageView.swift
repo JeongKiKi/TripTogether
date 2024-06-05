@@ -123,8 +123,10 @@ class MypageView: UIView {
         let vw = UIView()
         vw.addSubview(userName)
         vw.addSubview(likeStack)
-        vw.layer.borderWidth = 0.5
-        vw.layer.cornerRadius = 10
+        vw.layer.borderWidth = 2
+        vw.layer.cornerRadius = 5
+        vw.layer.borderColor = UIColor.appColor.cgColor
+
         return vw
     }()
 
@@ -133,7 +135,8 @@ class MypageView: UIView {
         btn.setTitle("로그아웃", for: .normal)
         btn.setTitleColor(.black, for: .normal)
         btn.layer.cornerRadius = 5
-        btn.layer.borderWidth = 1
+        btn.layer.borderColor = UIColor.appColor.cgColor
+        btn.layer.borderWidth = 2
         return btn
     }()
 
