@@ -16,7 +16,7 @@ class MypageViewController: UIViewController {
     var posts = [Post]()
     let db = Firestore.firestore()
     let storage = Storage.storage()
-
+    let loginUid = UserDefaults.standard.uid
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -34,6 +34,7 @@ class MypageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchPosts()
+        fetchUserDatas(uid: loginUid)
         guard let userNickname = UserDefaults.standard.nickName else { return }
         guard let like = UserDefaults.standard.like else { return }
         var liked = 0
@@ -59,6 +60,34 @@ class MypageViewController: UIViewController {
         fetchPosts()
     }
 
+    // 변경된 정보를 uid를 통해 유저 정보불러와 유저디폴트로 저장
+    private func fetchUserDatas(uid: String?) {
+        guard let uid = uid else { return }
+        db.collection("userInfo").document(uid).getDocument { [weak self] document, error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error fetching user data: \(error.localizedDescription)")
+                return
+            }
+
+            guard let document = document, document.exists,
+                  let data = document.data(),
+                  let nickName = data["nickName"] as? String,
+                  let like = data["like"] as? [String],
+                  let liked = data["liked"] as? [String]
+            else {
+                print("User data not found or malformed")
+                return
+            }
+
+            UserDefaults.standard.uid = uid
+            UserDefaults.standard.nickName = nickName
+            UserDefaults.standard.like = like
+            UserDefaults.standard.liked = liked
+        }
+    }
+
+    // 로그인된 유저의 게시물을 가져옴
     private func fetchPosts() {
         guard let nickname = UserDefaults.standard.string(forKey: "nickName") else { return }
 
@@ -91,9 +120,6 @@ extension MypageViewController: UITableViewDataSource, UITableViewDelegate, Mypa
             return UITableViewCell()
         }
         let post = posts[indexPath.row]
-//        if let url = URL(string: post.photoURL) {
-//            cell.myPhotoSpot.loadImage(from: url)
-//        }
         if let url = URL(string: post.photoURL) {
             cell.myPhotoSpot.loadImage(from: url) { [weak self] _ in
                 // 필요 시 이미지 로드 완료 후 추가 작업 수행
@@ -142,7 +168,7 @@ extension MypageViewController: UITableViewDataSource, UITableViewDelegate, Mypa
         present(alertController, animated: true, completion: nil)
     }
 
-    // 게시물 삭제
+    // 게시물 삭제(사진삭제 -> 문서삭제 -> 해당 게시물 좋아요 누른 유저 좋아요 제거)
     func deletePost(_ post: Post, at indexPath: IndexPath) {
         let storageRef = storage.reference(forURL: post.photoURL)
         // Storage에서 사진 삭제
@@ -153,17 +179,32 @@ extension MypageViewController: UITableViewDataSource, UITableViewDelegate, Mypa
             }
             print("Image deleted successfully")
 
-            // Firestore에서 문서 삭제
-            self?.db.collection("posts").document(post.documentId).delete { error in
-                if let error = error {
-                    print("Error deleting post: \(error)")
-                    return
+            // Firestore 트랜잭션 시작
+            self?.db.runTransaction({ transaction, _ -> Any? in
+                let postRef = self?.db.collection("posts").document(post.documentId)
+
+                // 문서 삭제
+                transaction.deleteDocument(postRef!)
+
+                // 좋아요 누른 유저들의 userInfo 업데이트
+                for userId in post.likedBy {
+                    let userLikeRef = self?.db.collection("userInfo").document(userId)
+                    userLikeRef?.updateData([
+                        "like": FieldValue.arrayRemove([post.documentId])
+                    ])
                 }
-                print("Post deleted successfully")
-                self?.posts.remove(at: indexPath.row)
-                self?.mypageView.myPageTableView.deleteRows(at: [indexPath], with: .automatic)
-                self?.mypageView.myTotalPostInt.text = "\(self?.posts.count ?? 0)"
-            }
+
+                return nil
+            }, completion: { [weak self] _, error in
+                if let error = error {
+                    print("Transaction failed: \(error)")
+                } else {
+                    print("Transaction successfully committed!")
+                    self?.posts.remove(at: indexPath.row)
+                    self?.mypageView.myPageTableView.deleteRows(at: [indexPath], with: .automatic)
+                    self?.mypageView.myTotalPostInt.text = "\(self?.posts.count ?? 0)"
+                }
+            })
         }
     }
 
