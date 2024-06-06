@@ -19,6 +19,22 @@ class LoginView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    lazy var appTitle: UILabel = {
+        let lb = UILabel()
+        lb.text = "Trip Together"
+        lb.textAlignment = .center
+        lb.font = .boldSystemFont(ofSize: 30)
+        return lb
+    }()
+
+    lazy var appSubTitle: UILabel = {
+        let lb = UILabel()
+        lb.text = "내가 가본 여행지를 자랑해 보아요"
+        lb.textAlignment = .center
+        lb.font = .systemFont(ofSize: 15)
+        return lb
+    }()
+
     lazy var idTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "아이디를 입력해주세요"
@@ -106,11 +122,23 @@ class LoginView: UIView {
     }()
 
     func setupUI() {
+        addSubview(appTitle)
+        addSubview(appSubTitle)
         addSubview(idPasswodrStack)
         addSubview(loginButton)
         addSubview(makeStack)
+        appTitle.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(40)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(50)
+        }
+        appSubTitle.snp.makeConstraints {
+            $0.top.equalTo(appTitle.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(20)
+        }
         idPasswodrStack.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(100)
+            $0.top.equalTo(appSubTitle.snp.top).offset(50)
             $0.leading.trailing.equalToSuperview().inset(40)
             $0.height.equalTo(100)
         }
