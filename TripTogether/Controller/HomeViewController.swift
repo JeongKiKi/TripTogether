@@ -14,6 +14,7 @@ class HomeViewController: UIViewController {
     let dummyModel = DummyModel()
     var posts = [Post]()
     let db = Firestore.firestore()
+    let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         title = "TripTogether"
@@ -24,6 +25,11 @@ class HomeViewController: UIViewController {
         homeView.homeTableView.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeCell")
         homeView.homeTableView.dataSource = self
         homeView.homeTableView.delegate = self
+
+        // 새로고침 컨트롤러 설정
+        refreshControl.addTarget(self, action: #selector(refreshPosts), for: .valueChanged)
+        homeView.homeTableView.refreshControl = refreshControl
+
         setupNavigationBar()
         fetchPosts()
     }
@@ -38,6 +44,14 @@ class HomeViewController: UIViewController {
         navigationItem.rightBarButtonItem = rightButton
     }
 
+    // 게시물 새로고침 함수
+    @objc private func refreshPosts() {
+        print("새로고침")
+        fetchPosts {
+            self.refreshControl.endRefreshing()
+        }
+    }
+
     @objc private func rightButtonTapped() {
         print("오른쪽 버튼 눌림")
         let ap = AddPostViewController()
@@ -45,7 +59,7 @@ class HomeViewController: UIViewController {
         navigationController?.pushViewController(ap, animated: true)
     }
 
-    private func fetchPosts() {
+    private func fetchPosts(completion: (() -> Void)? = nil) {
         // 업로드한 최신순으로 나열
         db.collection("posts").order(by: "timestamp", descending: true).getDocuments { [weak self] snapshot, error in
             guard let self = self else { return }
@@ -59,6 +73,7 @@ class HomeViewController: UIViewController {
                 return Post(documentId: doc.documentID, dictionary: data)
             }
             self.homeView.homeTableView.reloadData()
+            completion?()
         }
     }
 }
