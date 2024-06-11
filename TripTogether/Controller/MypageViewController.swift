@@ -29,8 +29,12 @@ class MypageViewController: UIViewController {
         mypageView.myPageTableView.dataSource = self
         mypageView.myPageTableView.delegate = self
         mypageView.myTotalPostInt.text = "\(posts.count)"
+        setupNavigationBar()
     }
-
+    override func loadView() {
+        super.loadView()
+        fetchPosts()
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchPosts()
@@ -49,15 +53,160 @@ class MypageViewController: UIViewController {
         mypageView.myTotalPostInt.text = "\(posts.count)"
     }
 
+    // 계정삭제, 유저 닉네임 수정 버튼을 위한 설정
+    private func setupNavigationBar() {
+        let settingButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(settingButtonTapped))
+        navigationItem.rightBarButtonItem = settingButton
+    }
+
+    // 계정삭제, 유저 닉네임 수정 버튼
+    @objc private func settingButtonTapped() {
+        let alertController = UIAlertController(title: "설정", message: nil, preferredStyle: .actionSheet)
+
+        let changeNicknameAction = UIAlertAction(title: "닉네임 변경", style: .default) { _ in
+            self.changeNickname()
+        }
+
+        let deleteAccountAction = UIAlertAction(title: "회원탈퇴", style: .destructive) { _ in
+            self.deleteAccount()
+        }
+
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+
+        alertController.addAction(changeNicknameAction)
+        alertController.addAction(deleteAccountAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    // 닉네임 변경 알럿
+    private func changeNickname() {
+        let alertController = UIAlertController(title: "닉네임 변경", message: "새 닉네임을 입력하세요", preferredStyle: .alert)
+
+        alertController.addTextField { textField in
+            textField.placeholder = "새 닉네임"
+        }
+
+        let saveAction = UIAlertAction(title: "저장", style: .default) { _ in
+            guard let newNickname = alertController.textFields?.first?.text, !newNickname.isEmpty else { return }
+            self.updateNickname(newNickname)
+        }
+
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    // 닉네임 변경
+    private func updateNickname(_ newNickname: String) {
+        guard let uid = loginUid else { return }
+        // 기존 닉네임을 가져옵니다
+        guard let oldNickname = UserDefaults.standard.nickName else { return }
+
+        // Firestore에서 userInfo 컬렉션의 닉네임을 업데이트합니다
+        db.collection("userInfo").document(uid).updateData(["nickName": newNickname]) { error in
+            if let error = error {
+                print("Error updating nickname: \(error)")
+                return
+            }
+
+            // UserDefaults에서 닉네임을 업데이트합니다
+            UserDefaults.standard.nickName = newNickname
+            self.mypageView.userName.text = newNickname
+
+            // posts 컬렉션에서 기존 닉네임을 가진 모든 게시물을 가져옵니다
+            self.db.collection("posts").whereField("userId", isEqualTo: oldNickname).getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error fetching posts: \(error)")
+                    return
+                }
+
+                // 각 게시물의 userId를 새로운 닉네임으로 업데이트합니다
+                guard let documents = snapshot?.documents else { return }
+                let batch = self.db.batch()
+
+                for document in documents {
+                    let postRef = document.reference
+                    batch.updateData(["userId": newNickname], forDocument: postRef)
+                }
+
+                batch.commit { error in
+                    if let error = error {
+                        print("Error updating posts: \(error)")
+                    } else {
+                        print("Nickname and posts successfully updated")
+                        self.fetchPosts()
+                    }
+                }
+            }
+        }
+    }
+
+    // 계정 삭제
+    private func deleteAccount() {
+        let alertController = UIAlertController(title: "회원탈퇴", message: "정말로 회원탈퇴 하시겠습니까?", preferredStyle: .alert)
+
+        let confirmAction = UIAlertAction(title: "탈퇴", style: .destructive) { _ in
+            self.performAccountDeletion()
+        }
+
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    // 회원탈퇴 (게시물삭제 => 유저정보 삭제)
+    private func performAccountDeletion() {
+        guard let uid = loginUid else { return }
+
+        // Fetch all posts by the user
+        db.collection("posts").whereField("userId", isEqualTo: UserDefaults.standard.nickName ?? "").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching posts: \(error)")
+                return
+            }
+
+            guard let documents = snapshot?.documents else { return }
+            let batch = self.db.batch()
+
+            // Delete each post
+            for document in documents {
+                let postRef = document.reference
+                batch.deleteDocument(postRef)
+            }
+
+            // Commit the batch deletion
+            batch.commit { error in
+                if let error = error {
+                    print("Error deleting posts: \(error)")
+                    return
+                }
+
+                // Delete the userInfo document
+                self.db.collection("userInfo").document(uid).delete { error in
+                    if let error = error {
+                        print("Error deleting account: \(error)")
+                        return
+                    }
+                    // Perform additional cleanup if necessary (e.g., delete user posts)
+                    UserDefaults.standard.isLoggedIn = false
+                    self.loginCheck.switchToLoginViewController()
+                }
+            }
+        }
+    }
+
     @objc private func logoutButtonTapped() {
         UserDefaults.standard.isLoggedIn = false
         print("logoutnbtn")
         loginCheck.switchToLoginViewController()
-    }
-
-    override func loadView() {
-        super.loadView()
-        fetchPosts()
     }
 
     // 변경된 정보를 uid를 통해 유저 정보불러와 유저디폴트로 저장
