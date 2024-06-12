@@ -25,23 +25,25 @@ struct Post {
         self.likedBy = dictionary["likedBy"] as? [String] ?? []
     }
 }
-//기존
-//extension UIImageView {
-//    func loadImage(from url: URL) {
-//        DispatchQueue.global().async { [weak self] in
-//            if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
-//                DispatchQueue.main.async {
-//                    self?.image = image
-//                }
-//            }
-//        }
-//    }
-//}
-//이미지 저장을 위한 새로운 코드
+
+// 이미지를 캐싱하기 위한 싱글톤 클래스를 정의
+enum ImageCache {
+    static let shared = NSCache<NSString, UIImage>()
+}
+
 extension UIImageView {
     func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
+        // 캐시된 이미지가 있는지 확인
+        if let cachedImage = ImageCache.shared.object(forKey: url.absoluteString as NSString) {
+            self.image = cachedImage
+            completion(cachedImage)
+            return
+        }
+        // 비동기적으로 이미지를 다운로드
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                // 캐시에 저장
+                ImageCache.shared.setObject(image, forKey: url.absoluteString as NSString)
                 DispatchQueue.main.async {
                     self.image = image
                     completion(image)
