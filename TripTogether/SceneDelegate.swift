@@ -34,8 +34,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let person = UIImage(systemName: "person.circle")
 
         if let items = tabBar.tabBar.items {
+            items[0].title = "TripTogether"
             items[0].image = house
+            items[1].title = "Like"
             items[1].image = like
+            items[2].title = "MyPage"
             items[2].image = person
         }
 
