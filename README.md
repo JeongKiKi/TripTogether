@@ -5,3 +5,4 @@ firebaseStorage 사용<br>
 firebaseDatabase 사용<br>
 snapkit 사용으로 오토레이아웃 설정<br>
 crud구현
+주요기능-> 게시글 좋아요 
