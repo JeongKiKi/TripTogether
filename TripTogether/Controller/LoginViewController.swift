@@ -87,15 +87,15 @@ class LoginViewController: UIViewController {
             self.loginCheck.switchToMainTabBarController()
         }
     }
-
+    //회원가입 버튼 클릭시 이벤트
     @objc private func makeEmailButtonTapped() {
-        print("회원가입 버튼 눌림")
         let makeEmail = MakeEmailViewController()
         navigationController?.pushViewController(makeEmail, animated: true)
     }
-
+    //비밀번호 찾기 버튼 클릭시 이벤트
     @objc private func findPasswordButtonTapped() {
-        print("비밀번호 찾기 버튼 눌림")
+        let findVC = FindPasswordViewController()
+        navigationController?.pushViewController(findVC, animated: true)
     }
 
     // FieldDelegates설정
