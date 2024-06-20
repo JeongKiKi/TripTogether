@@ -25,7 +25,6 @@ class MakeEmailViewController: UIViewController {
     }
 
     @objc private func createButtonTapped() {
-        print("비밀번호 찾기 버튼 눌림")
         guard let email = makeEmailView.emailTextField.text, !email.isEmpty,
               let password = makeEmailView.passwordTextField.text, !password.isEmpty,
               let passwordCheck = makeEmailView.passwordCheckTextField.text, !passwordCheck.isEmpty,
