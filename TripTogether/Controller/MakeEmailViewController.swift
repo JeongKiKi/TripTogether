@@ -16,6 +16,7 @@ class MakeEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view = makeEmailView
+        view.backgroundColor = .appColor
         setupActions()
         title = "회원가입"
     }

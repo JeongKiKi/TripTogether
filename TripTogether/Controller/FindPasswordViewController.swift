@@ -13,6 +13,7 @@ class FindPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view = findView
+        view.backgroundColor = .appColor
         navigationItem.title = "비밀번호 찾기"
         findView.findButton.addTarget(self, action: #selector(findButtonTapped), for: .touchUpInside)
     }
@@ -43,7 +44,7 @@ class FindPasswordViewController: UIViewController {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
         let saveAction = UIAlertAction(title: "확인", style: .default) { _ in
-            //비밀번호 재설정 이메일이 전송됬다면 화면 전환
+            // 비밀번호 재설정 이메일이 전송됬다면 화면 전환
             if complete {
                 self.navigationController?.popViewController(animated: true)
             }
@@ -54,7 +55,7 @@ class FindPasswordViewController: UIViewController {
 }
 
 extension String {
-    //이메일 형식 확인
+    // 이메일 형식 확인
     var isValidEmail: Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
