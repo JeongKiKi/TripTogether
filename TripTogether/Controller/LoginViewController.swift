@@ -87,12 +87,14 @@ class LoginViewController: UIViewController {
             self.loginCheck.switchToMainTabBarController()
         }
     }
-    //회원가입 버튼 클릭시 이벤트
+
+    // 회원가입 버튼 클릭시 이벤트
     @objc private func makeEmailButtonTapped() {
         let makeEmail = MakeEmailViewController()
         navigationController?.pushViewController(makeEmail, animated: true)
     }
-    //비밀번호 찾기 버튼 클릭시 이벤트
+
+    // 비밀번호 찾기 버튼 클릭시 이벤트
     @objc private func findPasswordButtonTapped() {
         let findVC = FindPasswordViewController()
         navigationController?.pushViewController(findVC, animated: true)
@@ -108,8 +110,6 @@ class LoginViewController: UIViewController {
     func loginBtnOn() {
         if loginView.loginButton.isEnabled {
             loginView.loginButton.backgroundColor = .systemBlue
-        } else {
-            loginView.loginButton.backgroundColor = .lightGray
         }
     }
 

@@ -44,6 +44,7 @@ class FindPassworView: UIView {
         btn.setTitle("비밀번호 찾기", for: .normal)
         btn.setTitleColor(.black, for: .normal)
         btn.layer.cornerRadius = 5
+        btn.backgroundColor = .systemBlue
         btn.layer.borderWidth = 1
         return btn
     }()

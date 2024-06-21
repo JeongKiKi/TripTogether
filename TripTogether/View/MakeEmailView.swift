@@ -164,10 +164,11 @@ class MakeEmailView: UIView {
 
     lazy var createButton: UIButton = {
         let btn = UIButton()
-        btn.setTitle("로그인", for: .normal)
+        btn.setTitle("완료", for: .normal)
         btn.setTitleColor(.black, for: .normal)
         btn.layer.cornerRadius = 5
         btn.layer.borderWidth = 1
+        btn.backgroundColor = .systemBlue
         return btn
     }()
 }
