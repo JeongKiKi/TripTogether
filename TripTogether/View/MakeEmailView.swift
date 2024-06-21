@@ -42,16 +42,14 @@ class MakeEmailView: UIView {
     lazy var emailLabel: UILabel = {
         let lb = UILabel()
         lb.text = "사용할 이메일을 입력해주세요"
+        lb.font = .systemFont(ofSize: 13)
         return lb
     }()
 
-    lazy var emailStack: UIStackView = {
-        let st = UIStackView(arrangedSubviews: [emailView, emailLabel])
-        st.axis = .vertical
-        st.alignment = .fill
-        st.distribution = .fillEqually
-        st.spacing = 7
-        addSubview(st)
+    lazy var emailTfLb: UIView = {
+        let st = UIView()
+        st.addSubview(emailView)
+        st.addSubview(emailLabel)
         return st
     }()
 
@@ -78,16 +76,14 @@ class MakeEmailView: UIView {
     lazy var passwordLabel: UILabel = {
         let lb = UILabel()
         lb.text = "6글자 이상의 비밀번호를 입력해주세요"
+        lb.font = .systemFont(ofSize: 13)
         return lb
     }()
 
-    lazy var passwordStack: UIStackView = {
-        let st = UIStackView(arrangedSubviews: [passwordView, passwordLabel])
-        st.axis = .vertical
-        st.alignment = .fill
-        st.distribution = .fillEqually
-        st.spacing = 7
-        addSubview(st)
+    lazy var passwordTfLb: UIView = {
+        let st = UIView()
+        st.addSubview(passwordView)
+        st.addSubview(passwordLabel)
         return st
     }()
 
@@ -114,16 +110,14 @@ class MakeEmailView: UIView {
     lazy var passwordCheckLabel: UILabel = {
         let lb = UILabel()
         lb.text = "비밀번호를 다시 입력해주세요"
+        lb.font = .systemFont(ofSize: 13)
         return lb
     }()
 
-    lazy var passwordCheckStack: UIStackView = {
-        let st = UIStackView(arrangedSubviews: [passwordCheckView, passwordCheckLabel])
-        st.axis = .vertical
-        st.alignment = .fill
-        st.distribution = .fillEqually
-        st.spacing = 7
-        addSubview(st)
+    lazy var passwordCheckTfLb: UIView = {
+        let st = UIView()
+        st.addSubview(passwordCheckView)
+        st.addSubview(passwordCheckLabel)
         return st
     }()
 
@@ -149,16 +143,14 @@ class MakeEmailView: UIView {
     lazy var nickNameLabel: UILabel = {
         let lb = UILabel()
         lb.text = "닉네임을 입력해주세요"
+        lb.font = .systemFont(ofSize: 13)
         return lb
     }()
 
-    lazy var nickNameStack: UIStackView = {
-        let st = UIStackView(arrangedSubviews: [nickNameView, nickNameLabel])
-        st.axis = .vertical
-        st.alignment = .fill
-        st.distribution = .fillEqually
-        st.spacing = 7
-        addSubview(st)
+    lazy var nickNameTfLb: UIView = {
+        let st = UIView()
+        st.addSubview(nickNameView)
+        st.addSubview(nickNameLabel)
         return st
     }()
 
@@ -175,33 +167,33 @@ class MakeEmailView: UIView {
 
 extension MakeEmailView {
     func setupUI() {
-        addSubview(emailStack)
-        addSubview(passwordStack)
-        addSubview(passwordCheckStack)
-        addSubview(nickNameStack)
+        addSubview(emailTfLb)
+        addSubview(passwordTfLb)
+        addSubview(passwordCheckTfLb)
+        addSubview(nickNameTfLb)
         addSubview(createButton)
-        emailStack.snp.makeConstraints {
+        emailTfLb.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(80)
         }
-        passwordStack.snp.makeConstraints {
-            $0.top.equalTo(emailStack.snp.bottom).offset(10)
+        passwordTfLb.snp.makeConstraints {
+            $0.top.equalTo(emailTfLb.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(80)
         }
-        passwordCheckStack.snp.makeConstraints {
-            $0.top.equalTo(passwordStack.snp.bottom).offset(10)
+        passwordCheckTfLb.snp.makeConstraints {
+            $0.top.equalTo(passwordTfLb.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(80)
         }
-        nickNameStack.snp.makeConstraints {
-            $0.top.equalTo(passwordCheckStack.snp.bottom).offset(10)
+        nickNameTfLb.snp.makeConstraints {
+            $0.top.equalTo(passwordCheckTfLb.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(80)
         }
         createButton.snp.makeConstraints {
-            $0.top.equalTo(nickNameStack.snp.bottom).offset(10)
+            $0.top.equalTo(nickNameTfLb.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(50)
         }
@@ -220,6 +212,38 @@ extension MakeEmailView {
         nickNameTextField.snp.makeConstraints {
             $0.leading.trailing.equalTo(nickNameView).inset(10)
             $0.centerY.equalTo(nickNameView.snp.centerY)
+        }
+        emailView.snp.makeConstraints {
+            $0.top.equalTo(emailTfLb.snp.top).offset(10)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+        emailLabel.snp.makeConstraints {
+            $0.top.equalTo(emailView.snp.bottom).offset(2)
+        }
+        passwordView.snp.makeConstraints {
+            $0.top.equalTo(passwordTfLb.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+        passwordLabel.snp.makeConstraints {
+            $0.top.equalTo(passwordView.snp.bottom).offset(2)
+        }
+        passwordCheckView.snp.makeConstraints {
+            $0.top.equalTo(passwordCheckTfLb.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+        passwordCheckLabel.snp.makeConstraints {
+            $0.top.equalTo(passwordCheckView.snp.bottom).offset(2)
+        }
+        nickNameView.snp.makeConstraints {
+            $0.top.equalTo(nickNameTfLb.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(40)
+        }
+        nickNameLabel.snp.makeConstraints {
+            $0.top.equalTo(nickNameView.snp.bottom).offset(2)
         }
     }
 }
