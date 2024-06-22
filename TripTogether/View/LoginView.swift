@@ -74,6 +74,13 @@ class LoginView: UIView {
         return vw
     }()
 
+    lazy var errorMessage: UILabel = {
+        let lb = UILabel()
+        lb.font = .systemFont(ofSize: 15)
+        lb.textColor = .red
+        return lb
+    }()
+
     lazy var loginButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("로그인", for: .normal)
@@ -127,6 +134,7 @@ class LoginView: UIView {
         addSubview(idPasswodrStack)
         addSubview(loginButton)
         addSubview(makeStack)
+        addSubview(errorMessage)
         appTitle.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(40)
             $0.leading.trailing.equalToSuperview()
@@ -149,6 +157,11 @@ class LoginView: UIView {
         passwordTextField.snp.makeConstraints {
             $0.leading.trailing.equalTo(passwordView).inset(10)
             $0.centerX.centerY.equalTo(passwordView)
+        }
+        errorMessage.snp.makeConstraints {
+            $0.top.equalTo(idPasswodrStack.snp.bottom).offset(5)
+            $0.leading.trailing.equalToSuperview().offset(40)
+            $0.height.equalTo(20)
         }
         loginButton.snp.makeConstraints {
             $0.top.equalTo(idPasswodrStack.snp.bottom).offset(30)

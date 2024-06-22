@@ -50,6 +50,7 @@ class LoginViewController: UIViewController {
                 loginView.passwordTextField.text = ""
                 loginView.idTextField.placeholder = "아이디를 확인해주세요"
                 loginView.passwordTextField.placeholder = "비밀번호를 확인해주세요"
+                loginView.errorMessage.text = "아이디, 비밀번호를 확인해주세요"
                 updateLoginButtonState()
                 return
             }

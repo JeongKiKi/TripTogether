@@ -5,6 +5,7 @@
 //  Created by 정기현 on 2024/05/20.
 //
 
+import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 import UIKit
@@ -31,10 +32,12 @@ class MypageViewController: UIViewController {
         mypageView.myTotalPostInt.text = "\(posts.count)"
         setupNavigationBar()
     }
+
     override func loadView() {
         super.loadView()
         fetchPosts()
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchPosts()
@@ -162,11 +165,11 @@ class MypageViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    // 회원탈퇴 (게시물삭제 => 유저정보 삭제)
+    // 회원 탈퇴 (게시물 삭제 -> 유저 정보 삭제 -> FirebaseAuth ID 삭제)
     private func performAccountDeletion() {
         guard let uid = loginUid else { return }
 
-        // Fetch all posts by the user
+        // 유저가 작성한 모든 게시물 가져오기
         db.collection("posts").whereField("userId", isEqualTo: UserDefaults.standard.nickName ?? "").getDocuments { snapshot, error in
             if let error = error {
                 print("Error fetching posts: \(error)")
@@ -176,28 +179,36 @@ class MypageViewController: UIViewController {
             guard let documents = snapshot?.documents else { return }
             let batch = self.db.batch()
 
-            // Delete each post
+            // 각 게시물 삭제
             for document in documents {
                 let postRef = document.reference
                 batch.deleteDocument(postRef)
             }
 
-            // Commit the batch deletion
+            // 배치 삭제 커밋
             batch.commit { error in
                 if let error = error {
                     print("Error deleting posts: \(error)")
                     return
                 }
 
-                // Delete the userInfo document
+                // userInfo 문서 삭제
                 self.db.collection("userInfo").document(uid).delete { error in
                     if let error = error {
                         print("Error deleting account: \(error)")
                         return
                     }
-                    // Perform additional cleanup if necessary (e.g., delete user posts)
-                    UserDefaults.standard.isLoggedIn = false
-                    self.loginCheck.switchToLoginViewController()
+                    // Firebase Auth 유저 삭제
+                    Auth.auth().currentUser?.delete { error in
+                        if let error = error {
+                            print("Error deleting Firebase Auth user: \(error)")
+                            return
+                        }
+
+                        // 추가 정리 작업 필요 시 수행 (예: 유저 게시물 삭제 등)
+                        UserDefaults.standard.isLoggedIn = false
+                        self.loginCheck.switchToLoginViewController()
+                    }
                 }
             }
         }
