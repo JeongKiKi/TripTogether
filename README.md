@@ -58,6 +58,11 @@ Trip Together는 소셜미디어로 다른 유저와 경험을 공유할 수 있
 
    <br>
    
+##  Tech Stack
+<img src="https://img.shields.io/badge/Xcode-147EFB?style=for-the-badge&logo=Xcode&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Swift-F05138?style=for-the-badge&logo=Swift&logoColor=white"/></a>
+<img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=Firebase&logoColor=white"/></a>
+<br><br>
 ##  라이브러리 사용, 이유
  ***SnapKit*** <br>
     Auto Layout을 쉽게 설정하기 위해 사용   
