@@ -1,34 +1,35 @@
 
 
-firebaseAuth 사용 <br>
-firebaseStorage 사용<br>
-firebaseDatabase 사용<br>
-snapkit 사용으로 오토레이아웃 설정<br>
-crud구현<br>
-주요기능-> 게시글 좋아요 <br>
-MVVM패턴 적용중 <br>
-
 # Trip Together
 
 <img src="https://github.com/JeongKiKi/TripTogether/assets/125369115/ca11c0de-dc10-4e91-9636-448cfa7832d9" width="300" height="300">
 <br>
+
+## 프로젝트 기간
+2024.5.20 ~ 2024.6.24
+
+
+<br>
+
 
 ##  프로젝트 소개 
 ### 나만 알고 있는 여행장소를 추천해주는 어플
 Trip Together는 소셜미디어로 다른 유저와 경험을 공유할 수 있습니다.<br>
 <br>
 
-1. 게시물 업로드 <br>
+1. 다양한 여행지를 확인할수 있습니다. <br>
     <br>
 
-2. 좋아요 기능 <br>
+2. 좋아요 기능으로 내가 가고 싶은 장소를 한 번에 찾아볼 수 있습니다. <br>
     <br>
 
-3.  마이페이지 게시물 수정<br>
+3.  마이페이지에서 닉네임 변경, 게시물 수정, 회원탈퇴가 가능합니다. <br>
     <br><br>
    
 ### 프로젝트 목표
-알려지지 않은 여행지를 공유하며 유저들에게 새로운 여행정보를 추천해 주는 것이 목표입니다. <br>
+잘 알려지지 않은 여행지를 공유하며 유저들에게 새로운 여행정보를 추천해 주는 것이 목표입니다. 
+<br>
+
 
 ##  구현 기능
 0. **주요 기능**
@@ -61,11 +62,25 @@ Trip Together는 소셜미디어로 다른 유저와 경험을 공유할 수 있
  ***SnapKit*** <br>
     Auto Layout을 쉽게 설정하기 위해 사용   
 <br>
- ***Firebase*** <br>
+ ***Firebase*** <br>
     유저 데이터, 유저가 생성한 콘텐츠 데이터 저장을 위해 사용
 <br>
 ## 앱 
 ### 앱 시연영상
+- [Trip Together](https://www.youtube.com/watch?v=RC5WamosELo)
 
 ### 앱 캡쳐본
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/380aef7a-7694-407f-82d5-f0ab5e08a40b" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/8a6f7c7b-c4f4-4f06-add7-60a7d1473cec" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/96ed45fb-02d9-4a4e-9f53-f6f40558879f" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/a1adfce2-0857-4f33-aa4f-d7e0450ee5fb" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/d38045b2-d2c5-40cf-b961-98b32bc60327" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/cba56173-c089-40e8-902a-c619be01172c" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/af1725b7-6300-464e-8cc8-c877cee8a237" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/29e08979-0229-4e6c-987f-864de969f391" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/734fb93e-7898-4a7c-8739-798c235e5818" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/2aa44c5d-a531-44da-95d2-4a63410db405" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/8de18ce0-05fc-4c85-81a5-5d0a5545f73a" width="150" height="300"/>
+<img src="https://github.com/JeongKiKi/WordMemory/assets/125369115/4a7e41ba-a37b-4eda-806a-36eafceb33a9" width="150" height="300"/>
+
 
