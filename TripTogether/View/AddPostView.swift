@@ -30,14 +30,13 @@ class AddPostView: UIView {
 
     lazy var photoTextfield: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "aaaa"
+        tf.placeholder = "설명을 추가해주세요!"
         return tf
     }()
-
+   
     lazy var addButton: UIButton = {
         let btn = UIButton()
         btn.setImage(.add, for: .normal)
-//        btn.setTitleColor(.white, for: .normal)
         btn.tintColor = .white
         btn.backgroundColor = .black
         btn.layer.cornerRadius = 10
