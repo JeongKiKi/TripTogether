@@ -8,15 +8,50 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
-
-
+    var logincheck = LoginCheck()
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        // 화면전환을 위해 추가
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        if UserDefaults.standard.isLoggedIn {
+            switchToMainTabBarController()
+        } else {
+            switchToLoginViewController()
+        }
+        window?.makeKeyAndVisible()
+    }
+
+    // 로그인이 되어있는 경우
+    func switchToMainTabBarController() {
+        let mainVC = UINavigationController(rootViewController: HomeViewController())
+        let likeVC = UINavigationController(rootViewController: LikeViewController())
+        let mypageVC = UINavigationController(rootViewController: MypageViewController())
+        let tabBar = UITabBarController()
+        tabBar.setViewControllers([mainVC, likeVC, mypageVC], animated: true)
+
+        let house = UIImage(systemName: "house")
+        let like = UIImage(systemName: "hand.thumbsup")
+        let person = UIImage(systemName: "person.circle")
+
+        if let items = tabBar.tabBar.items {
+            items[0].title = "TripTogether"
+            items[0].image = house
+            items[1].title = "Like"
+            items[1].image = like
+            items[2].title = "MyPage"
+            items[2].image = person
+        }
+
+        window?.rootViewController = tabBar
+    }
+
+    // 로그인이 되어있지 않은 경우
+    func switchToLoginViewController() {
+        let loginVC = LoginViewController()
+        let navigationController = UINavigationController(rootViewController: loginVC)
+
+        window?.rootViewController = navigationController
+//        window?.rootViewController = loginVC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -46,7 +81,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
-
