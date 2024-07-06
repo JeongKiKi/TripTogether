@@ -5,14 +5,11 @@
 //  Created by 정기현 on 2024/05/20.
 //
 
-import FirebaseAuth
-import FirebaseFirestore
 import UIKit
 
 class LoginViewController: UIViewController {
     let loginView = LoginView()
-    let loginCheck = LoginCheck()
-    let db = Firestore.firestore()
+    let firebaseManager = FirebaseManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,57 +40,29 @@ class LoginViewController: UIViewController {
             print("Email and password fields cannot be empty")
             return
         }
-        // Firebase Auth를 사용하여 로그인 시도
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+        // FirebaseManager를 사용하여 로그인 시도
+        firebaseManager.loginUser(withEmail: email, password: password) { [weak self] result in
             guard let self = self else { return }
-            if let error = error {
+
+            switch result {
+            // 로그인 성공시 실행
+            case .success(let uid):
+                print("Successfully logged in")
+                // 사용자 데이터를 가져오는 함수 호출
+                self.firebaseManager.fetchUserData(uid: uid)
+
+            // 로그인 실패시 실행
+            case .failure(let error):
                 print("Error logging in: \(error.localizedDescription)")
                 print("아이디 비번 틀림")
                 // 로그인 실패 시 텍스트 필드를 비우고, placeholder와 오류 메시지를 업데이트
-                loginView.idTextField.text = ""
-                loginView.passwordTextField.text = ""
-                loginView.idTextField.placeholder = "아이디를 확인해주세요"
-                loginView.passwordTextField.placeholder = "비밀번호를 확인해주세요"
-                loginView.errorMessage.text = "아이디, 비밀번호를 확인해주세요"
-                updateLoginButtonState()
-                return
+                self.loginView.idTextField.text = ""
+                self.loginView.passwordTextField.text = ""
+                self.loginView.idTextField.placeholder = "아이디를 확인해주세요"
+                self.loginView.passwordTextField.placeholder = "비밀번호를 확인해주세요"
+                self.loginView.errorMessage.text = "아이디, 비밀번호를 확인해주세요"
+                self.updateLoginButtonState()
             }
-
-            print("Successfully logged in")
-
-            // 인증 결과에서 사용자 UID를 가져옴
-            guard let uid = authResult?.user.uid else { return }
-
-            // 사용자 데이터를 가져오는 함수 호출
-            self.fetchUserData(uid: uid)
-        }
-    }
-
-    // uid를 통해 유저 정보불러와 유저디폴트로 저장
-    private func fetchUserData(uid: String) {
-        db.collection("userInfo").document(uid).getDocument { [weak self] document, error in
-            guard let self = self else { return }
-            if let error = error {
-                print("Error fetching user data: \(error.localizedDescription)")
-                return
-            }
-
-            guard let document = document, document.exists,
-                  let data = document.data(),
-                  let nickName = data["nickName"] as? String,
-                  let like = data["like"] as? [String],
-                  let liked = data["liked"] as? [String]
-            else {
-                print("User data not found or malformed")
-                return
-            }
-
-            UserDefaults.standard.isLoggedIn = true
-            UserDefaults.standard.uid = uid
-            UserDefaults.standard.nickName = nickName
-            UserDefaults.standard.like = like
-            UserDefaults.standard.liked = liked
-            self.loginCheck.switchToMainTabBarController()
         }
     }
 
