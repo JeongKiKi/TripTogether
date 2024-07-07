@@ -59,4 +59,34 @@ class FirebaseManager {
             completion(.success(uid))
         }
     }
+
+    // 회원가입 메서드 추가
+    func registerUser(withEmail email: String, password: String, nickname: String, completion: @escaping (Result<String, Error>) -> Void) {
+        auth.createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let uid = authResult?.user.uid else {
+                completion(.failure(NSError(domain: "RegistrationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "UID not found"])))
+                return
+            }
+
+            self.db.collection("userInfo").document(uid).setData([
+                "email": email,
+                "nickName": nickname,
+                "like": [],
+                "liked": [],
+                "uid": uid
+            ]) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                    completion(.success(uid))
+                }
+            }
+        }
+    }
 }
