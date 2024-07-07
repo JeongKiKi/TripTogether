@@ -5,13 +5,11 @@
 //  Created by 정기현 on 2024/05/22.
 //
 
-import FirebaseAuth
-import FirebaseFirestore
 import UIKit
+
 class MakeEmailViewController: UIViewController {
-    let db = Firestore.firestore()
     let makeEmailView = MakeEmailView()
-    let loginCheck = LoginCheck()
+    let firebaseManager = FirebaseManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,32 +35,21 @@ class MakeEmailViewController: UIViewController {
 
         guard password == passwordCheck else {
             print("비밀번호가 일치하지 않습니다.")
+            makeEmailView.passwordLabel.text = "비밀번호가 일치하지 않습니다."
+            makeEmailView.passwordCheckLabel.text = "비밀번호가 일치하지 않습니다."
             return
         }
-        // 회원가입
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+
+        // FirebaseManager를 사용하여 회원가입 시도
+        firebaseManager.registerUser(withEmail: email, password: password, nickname: nickname) { [weak self] result in
             guard let self = self else { return }
-            if let error = error {
+
+            switch result {
+            case .success:
+                print("회원가입 성공")
+                self.navigationController?.popViewController(animated: true)
+            case .failure(let error):
                 print("회원가입 실패: \(error.localizedDescription)")
-                return
-            }
-            // 문서를 uid로 지정하기위해 uid 가져오기
-            guard let uid = authResult?.user.uid else { return }
-
-            // 로그인 상태 저장
-            UserDefaults.standard.set(true, forKey: "isLoggedIn")
-
-            // 회원가입 userinfo를 firebasestore에 저장
-            db.collection("userInfo").document(uid).setData(["email": email,
-                                                             "nickName": nickname,
-                                                             "like": [], "liked": [], "uid": uid])
-            { error in
-                if let error = error {
-                    print("There was an issue saving data to firestore, \(error)")
-                } else {
-                    print("Successfully saved data.")
-                    self.navigationController?.popViewController(animated: true)
-                }
             }
         }
     }
