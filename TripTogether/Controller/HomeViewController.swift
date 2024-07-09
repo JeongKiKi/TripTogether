@@ -11,9 +11,9 @@ import UIKit
 
 class HomeViewController: UIViewController {
     let homeView = HomeView()
-    let dummyModel = DummyModel()
     var posts = [Post]()
     let db = Firestore.firestore()
+    var firebaseManager = FirebaseManager()
     let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
@@ -21,7 +21,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         view = homeView
-        // Do any additional setup after loading the view.
+
         homeView.homeTableView.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeCell")
         homeView.homeTableView.dataSource = self
         homeView.homeTableView.delegate = self
@@ -39,6 +39,7 @@ class HomeViewController: UIViewController {
         fetchPosts()
     }
 
+    // 네비게이션바 셋팅
     private func setupNavigationBar() {
         let rightButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(rightButtonTapped))
         navigationItem.rightBarButtonItem = rightButton
@@ -59,21 +60,19 @@ class HomeViewController: UIViewController {
         navigationController?.pushViewController(ap, animated: true)
     }
 
+    // 게시물 데이터 가져오는 함수
     private func fetchPosts(completion: (() -> Void)? = nil) {
-        // 업로드한 최신순으로 나열
-        db.collection("posts").order(by: "timestamp", descending: true).getDocuments { [weak self] snapshot, error in
+        firebaseManager.fetchPosts { [weak self] result in
             guard let self = self else { return }
-            if let error = error {
+            switch result {
+            case .success(let posts):
+                self.posts = posts
+                self.homeView.homeTableView.reloadData()
+                completion?()
+            case .failure(let error):
                 print("Error fetching posts: \(error)")
-                return
+                completion?()
             }
-            guard let documents = snapshot?.documents else { return }
-            self.posts = documents.compactMap { doc in
-                let data = doc.data()
-                return Post(documentId: doc.documentID, dictionary: data)
-            }
-            self.homeView.homeTableView.reloadData()
-            completion?()
         }
     }
 }
@@ -105,9 +104,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
         cell.descriptionLabel.text = post.description
         cell.nickNmaeLabel.text = post.userId
         cell.likeButton.setImage(likedImages, for: .normal)
-//        if let url = URL(string: post.photoURL) {
-//            cell.photoSpot.loadImage(from: url)
-//        }
+
         if let url = URL(string: post.photoURL) {
             cell.photoSpot.loadImage(from: url) { [weak self] _ in
                 // 필요 시 이미지 로드 완료 후 추가 작업 수행
@@ -126,47 +123,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
     func didTapLikeButton(in cell: HomeTableViewCell) {
         guard let indexPath = homeView.homeTableView.indexPath(for: cell) else { return }
         let post = posts[indexPath.row]
-        print("버튼: \(post.description)")
-        // 현재 사용자의 ID 가져오기
         guard let userId = UserDefaults.standard.uid else { return }
-        var userLikes = UserDefaults.standard.like ?? []
-        var updatedLikes = post.likes
-        var updatedLikedBy = post.likedBy
-        var likedImages = UIImage(systemName: "hand.thumbsup.fill")
-        // 사용자가 이미 좋아요를 했는지 확인
-        if updatedLikedBy.contains(userId) {
-            // 이미 좋아요를 한 경우: 좋아요 취소
-            updatedLikes -= 1
-            updatedLikedBy.removeAll { $0 == userId }
-            likedImages = UIImage(systemName: "hand.thumbsup.fill")
 
-            // 좋아요 배열에서 해당 포스트 ID 제거
-            let userLikeRef = db.collection("userInfo").document(userId)
-            userLikeRef.updateData([
-                "like": FieldValue.arrayRemove([post.documentId])
-            ])
-            userLikes.removeAll { $0 == post.documentId }
-        } else {
-            // 좋아요를 하지 않은 경우: 좋아요 추가
-            updatedLikes += 1
-            updatedLikedBy.append(userId)
-            likedImages = UIImage(systemName: "hand.thumbsup")
-
-            // 좋아요 배열에 해당 포스트 ID 추가
-            let userLikeRef = db.collection("userInfo").document(userId)
-            userLikeRef.updateData([
-                "like": FieldValue.arrayUnion([post.documentId])
-            ])
-            // 좋아요 배열에 해당 포스트 ID 추가
-            userLikes.append(post.documentId)
-        }
-        UserDefaults.standard.like = userLikes
-        // Firebase에 좋아요 정보 업데이트
-        let postRef = db.collection("posts").document(post.documentId)
-        postRef.updateData([
-            "likes": updatedLikes,
-            "likedBy": updatedLikedBy
-        ]) { [weak self] error in
+        firebaseManager.updateLikeStatus(for: post, userId: userId) { [weak self] updatedLikes, updatedLikedBy, error in
             if let error = error {
                 print("Error updating likes: \(error)")
                 return
@@ -174,7 +133,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate, HomeTa
             // 로컬 데이터 업데이트 및 테이블 뷰 새로 고침
             self?.posts[indexPath.row].likes = updatedLikes
             self?.posts[indexPath.row].likedBy = updatedLikedBy
-            cell.likeButton.setImage(likedImages, for: .normal)
+            let likedImage = updatedLikedBy.contains(userId) ? UIImage(systemName: "hand.thumbsup.fill") : UIImage(systemName: "hand.thumbsup")
+            cell.likeButton.setImage(likedImage, for: .normal)
             self?.homeView.homeTableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
