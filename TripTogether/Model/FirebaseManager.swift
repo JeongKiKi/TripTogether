@@ -91,12 +91,71 @@ class FirebaseManager {
     }
 
     func resetPassword(withEmail email: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        auth.sendPasswordReset(withEmail: email) {  error in
+        auth.sendPasswordReset(withEmail: email) { error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
             completion(.success(()))
+        }
+    }
+
+    // 게시물 데이터 가져오기 메서드 추가
+    func fetchPosts(completion: @escaping (Result<[Post], Error>) -> Void) {
+        db.collection("posts").order(by: "timestamp", descending: true).getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let documents = snapshot?.documents else {
+                completion(.success([]))
+                return
+            }
+            let posts = documents.compactMap { doc in
+                let data = doc.data()
+                return Post(documentId: doc.documentID, dictionary: data)
+            }
+            completion(.success(posts))
+        }
+    }
+
+    // 좋아요 상태 업데이트 메서드 추가
+    func updateLikeStatus(for post: Post, userId: String, completion: @escaping (Int, [String], Error?) -> Void) {
+        var updatedLikes = post.likes
+        var updatedLikedBy = post.likedBy
+        var userLikes = UserDefaults.standard.like ?? []
+
+        // 사용자가 이미 좋아요를 했는지 확인
+        if updatedLikedBy.contains(userId) {
+            // 이미 좋아요를 한 경우: 좋아요 취소
+            updatedLikes -= 1
+            updatedLikedBy.removeAll { $0 == userId }
+            userLikes.removeAll { $0 == post.documentId }
+
+            let userLikeRef = db.collection("userInfo").document(userId)
+            userLikeRef.updateData([
+                "like": FieldValue.arrayRemove([post.documentId])
+            ])
+        } else {
+            // 좋아요를 하지 않은 경우: 좋아요 추가
+            updatedLikes += 1
+            updatedLikedBy.append(userId)
+            userLikes.append(post.documentId)
+
+            let userLikeRef = db.collection("userInfo").document(userId)
+            userLikeRef.updateData([
+                "like": FieldValue.arrayUnion([post.documentId])
+            ])
+        }
+
+        UserDefaults.standard.like = userLikes
+
+        let postRef = db.collection("posts").document(post.documentId)
+        postRef.updateData([
+            "likes": updatedLikes,
+            "likedBy": updatedLikedBy
+        ]) { error in
+            completion(updatedLikes, updatedLikedBy, error)
         }
     }
 }
