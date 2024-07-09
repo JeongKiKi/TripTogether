@@ -5,11 +5,12 @@
 //  Created by 정기현 on 2024/06/20.
 //
 
-import FirebaseAuth
 import UIKit
 
 class FindPasswordViewController: UIViewController {
     var findView = FindPassworView()
+    var firebaseManager = FirebaseManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view = findView
@@ -28,14 +29,16 @@ class FindPasswordViewController: UIViewController {
             showAlert(message: "유효한 이메일을 입력해주세요.", complete: false)
             return
         }
-
-        Auth.auth().sendPasswordReset(withEmail: email) { error in
-            if let error = error {
+        //firebaseManager의 비밀번호 찾기
+        firebaseManager.resetPassword(withEmail: email) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                self.showAlert(message: "비밀번호 재설정 이메일이 전송되었습니다.", complete: true)
+            case .failure(let error):
                 self.showAlert(message: "비밀번호 재설정 이메일 전송에 실패했습니다: \(error.localizedDescription)", complete: false)
-                return
             }
-
-            self.showAlert(message: "비밀번호 재설정 이메일이 전송되었습니다.", complete: true)
         }
     }
 
