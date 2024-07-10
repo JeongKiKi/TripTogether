@@ -5,14 +5,11 @@
 //  Created by 정기현 on 2024/05/20.
 //
 
-import Firebase
-import FirebaseFirestore
 import UIKit
 
 class HomeViewController: UIViewController {
     let homeView = HomeView()
     var posts = [Post]()
-    let db = Firestore.firestore()
     var firebaseManager = FirebaseManager()
     let refreshControl = UIRefreshControl()
 

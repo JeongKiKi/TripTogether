@@ -7,12 +7,15 @@
 
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
+
 import UIKit
 
 class FirebaseManager {
     let db = Firestore.firestore()
     private let auth = Auth.auth()
     let loginCheck = LoginCheck()
+    let storage = Storage.storage()
 
     // uid를 통해 유저 정보불러와 유저디폴트로 저장
     // 로그인 시도시 사용
@@ -156,6 +159,116 @@ class FirebaseManager {
             "likedBy": updatedLikedBy
         ]) { error in
             completion(updatedLikes, updatedLikedBy, error)
+        }
+    }
+
+    // 게시글 저장 함수 호출
+    func addPost(image: UIImage, description: String, userId: String) {
+        uploadImage(image) { result in
+            switch result {
+            case .success(let imageUrl):
+                self.savePostToFirestore(imageUrl: imageUrl, description: description, userId: userId)
+            case .failure(let error):
+                print("Error uploading image: \(error)")
+            }
+        }
+    }
+
+    // Firestore에서 게시글 수정
+    func updatePost(post: Post, newImage: UIImage?, newDescription: String) {
+        if let newImage = newImage {
+            // 새 이미지가 있으면 업로드
+            uploadImage(newImage) { [weak self] result in
+                switch result {
+                case .success(let imageUrl):
+                    self?.updatePostInFirestore(postId: post.documentId, imageUrl: imageUrl, description: newDescription)
+                    // 기존 이미지 삭제
+                    self?.deleteOldImage(post.photoURL)
+                case .failure(let error):
+                    print("Error uploading image: \(error)")
+                }
+            }
+        } else {
+            // 새 이미지가 없으면 기존 이미지 URL 사용
+            updatePostInFirestore(postId: post.documentId, imageUrl: post.photoURL, description: newDescription)
+        }
+    }
+
+    // Firebase Storage에 사진 업로드
+    func uploadImage(_ image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
+        let storageRef = Storage.storage().reference()
+        let imageRef = storageRef.child("images/\(UUID().uuidString).jpg")
+
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            completion(.failure(NSError(domain: "ImageConversionError", code: 0, userInfo: nil)))
+            return
+        }
+
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+
+        imageRef.putData(imageData, metadata: metadata) { _, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            imageRef.downloadURL { url, error in
+                if let error = error {
+                    completion(.failure(error))
+                } else if let url = url {
+                    completion(.success(url.absoluteString))
+                }
+            }
+        }
+    }
+
+    // 기존 이미지 삭제
+    func deleteOldImage(_ imageUrl: String) {
+        let storageRef = storage.reference(forURL: imageUrl)
+        storageRef.delete { error in
+            if let error = error {
+                print("Error deleting old image: \(error)")
+            } else {
+                print("Old image deleted successfully")
+            }
+        }
+    }
+
+    // Firestore에 게시글 저장
+    func savePostToFirestore(imageUrl: String, description: String, userId: String) {
+        let db = Firestore.firestore()
+        let postId = UUID().uuidString
+        let postData: [String: Any] = [
+            "imageUrl": imageUrl,
+            "description": description,
+            "userId": userId,
+            "timestamp": FieldValue.serverTimestamp(),
+            "likes": 0,
+            "likedBy": []
+        ]
+        db.collection("posts").document(postId).setData(postData) { error in
+            if let error = error {
+                print("Error saving post: \(error)")
+            } else {
+                print("Post successfully saved.")
+            }
+        }
+    }
+
+    // Firestore에서 게시글 데이터 업데이트
+    func updatePostInFirestore(postId: String, imageUrl: String, description: String) {
+        let db = Firestore.firestore()
+        db.collection("posts").document(postId).updateData([
+            "photoURL": imageUrl,
+            "description": description,
+            "timestamp": FieldValue.serverTimestamp()
+        ]) { error in
+            if let error = error {
+                print("Error updating post: \(error)")
+            } else {
+                print("Post successfully updated.")
+            }
         }
     }
 }

@@ -11,7 +11,8 @@ import UIKit
 
 class AddPostViewController: UIViewController {
     let addPostView = AddPostView()
-    let storage = Storage.storage()
+    let firebaseManager = FirebaseManager()
+
     var post: Post?
     var isEditingPost = false
     var originalImage: UIImage?
@@ -44,6 +45,7 @@ class AddPostViewController: UIViewController {
         addPostView.addButton.addTarget(self, action: #selector(selectBtnTapped), for: .touchUpInside)
     }
 
+    // 업로드 버튼 클릭시 이벤트
     @objc private func postButtonTapped() {
         print("add 버튼 눌림")
         guard let des = addPostView.photoTextfield.text else { return }
@@ -51,138 +53,31 @@ class AddPostViewController: UIViewController {
         guard let selectedImage = addPostView.photoImage.image else { return }
         guard let userNickname = UserDefaults.standard.nickName else { return }
 
+        // 게시글 수정
         if isEditingPost, let post = post {
             // 사진이 변경되었는지 확인
             if addPostView.photoImage.image == originalImage {
-                updatePost(post: post, newImage: nil, newDescription: des)
+                firebaseManager.updatePost(post: post, newImage: nil, newDescription: des)
             } else {
-                guard let selectedImage = addPostView.photoImage.image else { return }
-                updatePost(post: post, newImage: selectedImage, newDescription: des)
+                firebaseManager.updatePost(post: post, newImage: selectedImage, newDescription: des)
+                
             }
+
         } else {
+            // 개시물 추가
             guard let selectedImage = addPostView.photoImage.image else { return }
-            addPost(image: selectedImage, description: des, userId: userNickname)
+            firebaseManager.addPost(image: selectedImage, description: des, userId: userNickname)
         }
         navigationController?.popViewController(animated: true)
     }
 
+    // 사진 선택 버튼 클릭시 이벤트
     @objc private func selectBtnTapped() {
-        print("add 버튼 눌림")
+        print("갤러리 버튼 눌림")
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
-    }
-
-    // Firebase Storage에 사진 업로드
-    func uploadImage(_ image: UIImage, completion: @escaping (Result<String, Error>) -> Void) {
-        let storageRef = Storage.storage().reference()
-        let imageRef = storageRef.child("images/\(UUID().uuidString).jpg")
-
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-            completion(.failure(NSError(domain: "ImageConversionError", code: 0, userInfo: nil)))
-            return
-        }
-
-        let metadata = StorageMetadata()
-        metadata.contentType = "image/jpeg"
-
-        imageRef.putData(imageData, metadata: metadata) { _, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-
-            imageRef.downloadURL { url, error in
-                if let error = error {
-                    completion(.failure(error))
-                } else if let url = url {
-                    completion(.success(url.absoluteString))
-                }
-            }
-        }
-    }
-
-    // Firestore에 게시글 저장
-    func savePostToFirestore(imageUrl: String, description: String, userId: String) {
-        let db = Firestore.firestore()
-        let postId = UUID().uuidString
-        let postData: [String: Any] = [
-            "imageUrl": imageUrl,
-            "description": description,
-            "userId": userId,
-            "timestamp": FieldValue.serverTimestamp(),
-            "likes": 0,
-            "likedBy": []
-        ]
-
-        db.collection("posts").document(postId).setData(postData) { error in
-            if let error = error {
-                print("Error saving post: \(error)")
-            } else {
-                print("Post successfully saved.")
-            }
-        }
-    }
-
-    // Firestore에서 게시글 수정
-    func updatePost(post: Post, newImage: UIImage?, newDescription: String) {
-        if let newImage = newImage {
-            // 새 이미지가 있으면 업로드
-            uploadImage(newImage) { [weak self] result in
-                switch result {
-                case .success(let imageUrl):
-                    self?.updatePostInFirestore(postId: post.documentId, imageUrl: imageUrl, description: newDescription)
-                    // 기존 이미지 삭제
-                    self?.deleteOldImage(post.photoURL)
-                case .failure(let error):
-                    print("Error uploading image: \(error)")
-                }
-            }
-        } else {
-            // 새 이미지가 없으면 기존 이미지 URL 사용
-            updatePostInFirestore(postId: post.documentId, imageUrl: post.photoURL, description: newDescription)
-        }
-    }
-
-    // 기존 이미지 삭제
-    func deleteOldImage(_ imageUrl: String) {
-        let storageRef = storage.reference(forURL: imageUrl)
-        storageRef.delete { error in
-            if let error = error {
-                print("Error deleting old image: \(error)")
-            } else {
-                print("Old image deleted successfully")
-            }
-        }
-    }
-
-    // Firestore에서 게시글 데이터 업데이트
-    func updatePostInFirestore(postId: String, imageUrl: String, description: String) {
-        let db = Firestore.firestore()
-        db.collection("posts").document(postId).updateData([
-            "imageUrl": imageUrl,
-            "description": description,
-            "timestamp": FieldValue.serverTimestamp()
-        ]) { error in
-            if let error = error {
-                print("Error updating post: \(error)")
-            } else {
-                print("Post successfully updated.")
-            }
-        }
-    }
-
-    // 게시글 저장 함수 호출
-    func addPost(image: UIImage, description: String, userId: String) {
-        uploadImage(image) { result in
-            switch result {
-            case .success(let imageUrl):
-                self.savePostToFirestore(imageUrl: imageUrl, description: description, userId: userId)
-            case .failure(let error):
-                print("Error uploading image: \(error)")
-            }
-        }
     }
 }
 
