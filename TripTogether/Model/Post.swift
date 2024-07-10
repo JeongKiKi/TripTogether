@@ -55,4 +55,25 @@ extension UIImageView {
             }
         }
     }
+    // 이미지 URL을 새로 설정하고 업데이트하는 메서드
+        func updateImage(from newUrl: URL, completion: @escaping (UIImage?) -> Void) {
+            // 기존 URL의 캐시 제거
+            ImageCache.shared.removeObject(forKey: newUrl.absoluteString as NSString)
+            
+            // 비동기적으로 새 이미지 다운로드
+            DispatchQueue.global().async {
+                if let data = try? Data(contentsOf: newUrl), let image = UIImage(data: data) {
+                    // 다운로드된 이미지를 캐시에 저장
+                    ImageCache.shared.setObject(image, forKey: newUrl.absoluteString as NSString)
+                    DispatchQueue.main.async {
+                        self.image = image
+                        completion(image)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
+                }
+            }
+        }
 }
