@@ -225,12 +225,13 @@ class FirebaseManager {
 
     // 기존 이미지 삭제
     func deleteOldImage(_ imageUrl: String) {
+        print("기존 이미지 삭제")
         let storageRef = storage.reference(forURL: imageUrl)
         storageRef.delete { error in
             if let error = error {
                 print("Error deleting old image: \(error)")
             } else {
-                print("Old image deleted successfully")
+                print("기존 이미지 삭제 완료")
             }
         }
     }
@@ -258,15 +259,18 @@ class FirebaseManager {
 
     // Firestore에서 게시글 데이터 업데이트
     func updatePostInFirestore(postId: String, imageUrl: String, description: String) {
+        print("게시글 업데이트 시작")
         let db = Firestore.firestore()
         db.collection("posts").document(postId).updateData([
-            "photoURL": imageUrl,
+            "imageUrl": imageUrl,
             "description": description,
             "timestamp": FieldValue.serverTimestamp()
         ]) { error in
             if let error = error {
                 print("Error updating post: \(error)")
+                print("게시글 업데이트 에러")
             } else {
+                print("게시글 업데이트 완료")
                 print("Post successfully updated.")
             }
         }
