@@ -61,6 +61,9 @@ Trip Together는 소셜미디어로 다른 유저와 경험을 공유할 수 있
    <br> 트러블 슈팅
    - 메인화면에서 사진을 불러올때 사진 버벅 거리는 현상발생
    - 이미지 캐싱을 통해 미리 저장된 사진은 통신을 통해 가져오지 않아서 오류 해결
+  
+   - 파이어베이스 사용하면서 규칙을 설정하지 않아서 일정 기간 뒤에 연동이 되지않는 문제 발생
+   - 파이어베이스 규칙을 설정하여 문제 해결
     <br>
 ##  Tech Stack
 <img src="https://img.shields.io/badge/Xcode-147EFB?style=for-the-badge&logo=Xcode&logoColor=white"/></a>
