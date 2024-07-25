@@ -64,6 +64,7 @@ Trip Together는 소셜미디어로 다른 유저와 경험을 공유할 수 있
   
    - 파이어베이스 사용하면서 규칙을 설정하지 않아서 일정 기간 뒤에 연동이 되지않는 문제 발생
        - 파이어베이스 규칙을 설정하여 문제 해결
+   - MVC 학습을 위해 기존 코드를 MVC패턴으로 리펙토링
     <br>
 ##  Tech Stack
 <img src="https://img.shields.io/badge/Xcode-147EFB?style=for-the-badge&logo=Xcode&logoColor=white"/></a>
