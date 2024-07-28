@@ -1,5 +1,4 @@
 
-
 # Trip Together
 
 <img src="https://github.com/JeongKiKi/TripTogether/assets/125369115/ca11c0de-dc10-4e91-9636-448cfa7832d9" width="300" height="300">
